@@ -1,0 +1,15 @@
+# node_modules
+frontend/client/node_modules/
+
+# dist (build de React)
+frontend/client/dist/
+
+# Django
+*.pyc
+__pycache__/
+venv/
+db.sqlite3
+
+# Otros
+.env
+.DS_Store

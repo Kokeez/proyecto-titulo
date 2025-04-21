@@ -1,32 +1,74 @@
-import { useEffect, useState } from "react";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import Home from "./home";
+import Login from "./login";
+import ProductList from "./lista_productos";
+import Dashboard from "./dashboard";
+import Navbar from "./navbar";
+import { jwtDecode } from "jwt-decode"; // Asegúrate de usar el paquete correcto de jwt-decode
 
-
-function App() {
-  const [mensaje, setMensaje] = useState("Cargando...");
+const App = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [userType, setUserType] = useState(null);
 
   useEffect(() => {
-    console.log("Intentando hacer fetch a la API...");
-  
-    fetch("http://localhost:8000/api/saludo/")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Respuesta del backend:", data);
-        setMensaje(data.mensaje);
-      })
-      .catch((err) => {
-        console.error("Error al conectar con el backend:", err);
-        setMensaje("Error al conectar");
-      });
-  }, []);
-  
+    const loggedInUser = localStorage.getItem("username");
+    const loggedInUserType = localStorage.getItem("userType");
+    const photoUrl = localStorage.getItem("photoUrl");
+    const accessToken = localStorage.getItem("access");
+
+    if (loggedInUser && loggedInUserType && accessToken) {
+      // Decodificamos el token y verificamos la expiración
+      const decodedToken = jwtDecode(accessToken);
+      const currentTime = Date.now() / 1000;
+
+      // Si el token ha expirado
+      if (decodedToken.exp < currentTime) {
+        // Eliminar datos y redirigir a login si el token ha expirado
+        localStorage.removeItem("access");
+        localStorage.removeItem("refresh");
+        localStorage.removeItem("userType");
+        localStorage.removeItem("username");
+        localStorage.removeItem("photoUrl");
+        navigate("/login");
+      } else {
+        setUser({
+          name: loggedInUser,
+          photoUrl: photoUrl || "https://www.w3schools.com/howto/img_avatar.png",
+        });
+        setUserType(loggedInUserType);
+      }
+    } else {
+      // Si no hay usuario logueado, redirigimos al login
+      if (location.pathname !== "/login") {
+        navigate("/login");
+      }
+    }
+  }, [location.pathname, navigate]);
 
   return (
-  <>
-  <h1>{mensaje}</h1>
-  <p>funciona porfavor</p>
-  </>
-)
-}
+    <div>
+      {/* Mostrar Navbar solo si no estamos en la página de login */}
+      {location.pathname !== "/login" && <Navbar userType={userType} user={user} />}
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/Tienda" element={<ProductList />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        {/* Solo el admin puede acceder al dashboard */}
+        {userType === "admin" && <Route path="/dashboard" element={<Dashboard />} />}
+      </Routes>
+    </div>
+  );
+};
 
 export default App;
+
+
+
+
+
+

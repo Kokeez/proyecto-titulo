@@ -1,0 +1,67 @@
+/* Personalización del Navbar */
+.navbar {
+    background-color: #1b1b1b; /* Fondo oscuro */
+    padding: 10px 20px;
+  }
+/* Estilo del logo */
+.navbar .vulcastock-logo {
+    font-size: 2rem;  /* Tamaño del logo */
+    font-weight: bold;
+    color: #ffd200; /* Color del logo */
+    text-decoration: none;  /* Eliminar subrayado */
+    transition: transform 0.3s ease-in-out;  /* Suavizado de la animación */
+  }
+  
+  /* Efecto cuando el mouse pasa sobre el logo */
+  .navbar .vulcastock-logo:hover {
+    transform: scale(1.2);  /* Agranda el logo al 120% */
+  }
+  
+  
+  .navbar .user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .navbar .user-photo {
+    animation: none; 
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #ffd200;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+  }
+  .navbar .user-photo:hover {
+    transform: scale(1.1); /* Efecto de agrandamiento al pasar el cursor */
+  }
+
+  .navbar .user-name {
+    color: #fff;
+    font-weight: 600;
+  }
+  
+  .navbar .user-info:hover {
+    cursor: pointer;
+  }
+  
+  .navbar .search-bar input {
+    padding: 10px;
+    border-radius: 25px;
+    border: 2px solid #ffd200;
+    background-color: #fff;
+    width: 250px;
+  }
+  
+  .navbar .search-bar input:focus {
+    border-color: #ff5c00;
+  }
+  
+  .navbar .auth-links button {
+    background-color: #ffd200;
+    color: black;
+    font-weight: 600;
+    border-radius: 25px;
+  }
+  

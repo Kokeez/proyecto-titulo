@@ -1,0 +1,59 @@
+.hero {
+    padding: 30px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 50px; /* Mueve el título hacia abajo */
+  }
+  
+  .hero h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #1b1b1b;
+    margin-bottom: 30px;
+  }
+  
+  /* Para la fila de categorías */
+  .categorias {
+    display: flex;
+    justify-content: center;  /* Centra los elementos horizontalmente */
+    width: 100%;
+    margin-top: 30px;
+  }
+  
+  /* Caja de cada categoría */
+  .categoria-box {
+    background-color: #fff;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    border-radius: 10px;
+    width: 500px; /* Ajusta el tamaño */
+    height: 300px;
+    transition: transform 0.3s ease; /* Agrega transición */
+    margin: 0 250px;
+  }
+  
+  /* Hover de categorías */
+  .categoria-box:hover {
+    transform: translateX(10px); /* Mueve las cajas un poco a la derecha cuando se pasa el mouse */
+  }
+  
+  .categoria-box .placeholder-img {
+    width: 100%;
+    height: 200px;
+    background-color: #ccc;
+    margin-bottom: 10px;
+    border-radius: 50px;
+    object-fit: cover;
+  }
+  
+  
+  .categoria-box p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+  }
+  

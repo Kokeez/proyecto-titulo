@@ -1,0 +1,110 @@
+/* Contenedor principal */
+.product-list-container {
+    padding: 30px;
+    background-color: #f5f7fa;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Título */
+  h1 {
+    color: #1b1b1b;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    text-align: center;
+  }
+  
+  /* Filtro */
+  .filter {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    justify-content: center;  /* Centra el filtro */
+    flex-wrap: wrap;  /* Asegura que los filtros se acomoden en pantallas pequeñas */
+  }
+  
+  .filter select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    width: 180px; /* Establece un ancho consistente para los filtros */
+  }
+  
+  /* Grid de productos */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid */
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 30px;
+  }
+  
+  /* Card de productos */
+  .product-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+  
+  .product-card:hover {
+    transform: translateY(-5px); /* Efecto sutil al pasar el mouse */
+  }
+  
+  /* Imagen de producto */
+  .product-image {
+    width: 100%;
+    height: 150px;
+    background-color: #ccc;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+  
+  /* Nombre del producto */
+  .product-card h3 {
+    color: #333;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  /* Descripción del producto */
+  .product-card p {
+    color: #888;
+    font-size: 1rem;
+    margin-bottom: 15px;
+  }
+  
+  /* Botón de compra */
+  .buy-button {
+    padding: 12px 20px;
+    background-color: #d61d21;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s ease;
+    font-size: 1rem;
+  }
+  
+  .buy-button:hover {
+    background-color: #ffd200; /* Amarillo */
+    transform: scale(1.05);
+  }
+  
+  /* Etiqueta "Producto nuevo" */
+  .etiqueta-nuevo {
+    display: inline-block;
+    background-color: #ffd200;
+    color: #1b1b1b;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
