@@ -1,101 +1,101 @@
-import React, { useState } from "react";
-import { Card, Button, Form } from "react-bootstrap";
-import "./lista_productos.css"; // Asegúrate de tener el archivo CSS correspondiente
+import "./lista_productos.css";
+// lista_productos.jsx
+import React, { useState, useEffect } from "react";
+import { Card, Button, Row, Col, Form, Container } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const ProductList = () => {
-  const [filter, setFilter] = useState({
-    type: "",
-    year: "",
-    brand: "",
-  });
+  const [products, setProducts]     = useState([]);
+  const [filter, setFilter]         = useState({ type: "", year: "", brand: "" });
+  const [loading, setLoading]       = useState(true);
+  const [error, setError]           = useState("");
 
-  // Datos simulados de productos
-  const products = [
-    { id: 1, name: "Llanta 16", price: "$15" },
-    { id: 2, name: "Retrovisor", price: "$31" },
-    { id: 3, name: "Espejo", price: "$12" },
-    { id: 4, name: "Asiento", price: "$12" },
-    { id: 5, name: "Volante", price: "$10" },
-    { id: 6, name: "Logo Tipo", price: "$10" },
-    { id: 7, name: "Focos", price: "$12" },
-    { id: 8, name: "Retrovisor", price: "$17" },
-    { id: 9, name: "Cubre asientos", price: "$15" },
-    { id: 10, name: "Aromáticos", price: "$31" },
-    { id: 11, name: "Aceite", price: "$12" },
-    { id: 12, name: "Parabrisas", price: "$12" },
-    { id: 13, name: "Luces led", price: "$10" },
-    { id: 14, name: "Adaptador bluetooth", price: "$10" },
-    { id: 15, name: "Sensores", price: "$12" },
-    { id: 16, name: "Pines", price: "$17" },
-  ];
+  useEffect(() => {
+    fetch("http://localhost:8000/api/productos/")
+      .then(res => {
+        if (!res.ok) throw new Error("Error al cargar productos");
+        return res.json();
+      })
+      .then(data => setProducts(data))
+      .catch(() => setError("No se pudieron cargar los productos"))
+      .finally(() => setLoading(false));
+  }, []);
 
-  // Filtrado de productos
-  const filteredProducts = products.filter((product) => {
-    return (
-      (filter.type === "" || product.name.includes(filter.type)) &&
-      (filter.year === "" || product.name.includes(filter.year)) &&
-      (filter.brand === "" || product.name.includes(filter.brand))
-    );
-  });
+  const filteredProducts = products.filter(p => 
+    (filter.type  === "" || p.nombre.includes(filter.type)) &&
+    (filter.year  === "" || p.nombre.includes(filter.year)) &&
+    (filter.brand === "" || p.nombre.includes(filter.brand))
+  );
 
-  const handleFilterChange = (e) => {
-    setFilter({
-      ...filter,
-      [e.target.name]: e.target.value,
-    });
-  };
+  if (loading) return <Container className="text-center py-5">Cargando productos…</Container>;
+  if (error)   return <Container className="text-center py-5 text-danger">{error}</Container>;
 
   return (
-    <div className="product-list-container">
-      <h1>Lista de Productos</h1>
+    <Container className="py-5">
+      {/* Título centrado */}
+      <h1 className="text-center mb-4">Lista de Productos</h1>
 
-      {/* Filtro */}
-      <div className="filter mb-4">
-        <Form.Group controlId="type" className="me-3">
-          <Form.Label>Tipo de Vehículo</Form.Label>
-          <Form.Control as="select" name="type" value={filter.type} onChange={handleFilterChange}>
-            <option value="">Seleccionar</option>
+      {/* Filtros */}
+      <Row className="justify-content-center mb-5">
+        <Col xs={12} md={4} lg={3} className="mb-3">
+          <Form.Select
+            name="type"
+            value={filter.type}
+            onChange={e => setFilter(f => ({ ...f, type: e.target.value }))}
+          >
+            <option value="">Tipo de Vehículo</option>
             <option value="Llanta">Llanta</option>
             <option value="Retrovisor">Retrovisor</option>
-            <option value="Espejo">Espejo</option>
-          </Form.Control>
-        </Form.Group>
-
-        <Form.Group controlId="year" className="me-3">
-          <Form.Label>Año</Form.Label>
-          <Form.Control as="select" name="year" value={filter.year} onChange={handleFilterChange}>
-            <option value="">Seleccionar</option>
+            {/* … */}
+          </Form.Select>
+        </Col>
+        <Col xs={12} md={4} lg={3} className="mb-3">
+          <Form.Select
+            name="year"
+            value={filter.year}
+            onChange={e => setFilter(f => ({ ...f, year: e.target.value }))}
+          >
+            <option value="">Año</option>
             <option value="2020">2020</option>
             <option value="2021">2021</option>
-            <option value="2022">2022</option>
-          </Form.Control>
-        </Form.Group>
-
-        <Form.Group controlId="brand">
-          <Form.Label>Marca</Form.Label>
-          <Form.Control as="select" name="brand" value={filter.brand} onChange={handleFilterChange}>
-            <option value="">Seleccionar</option>
+          </Form.Select>
+        </Col>
+        <Col xs={12} md={4} lg={3} className="mb-3">
+          <Form.Select
+            name="brand"
+            value={filter.brand}
+            onChange={e => setFilter(f => ({ ...f, brand: e.target.value }))}
+          >
+            <option value="">Marca</option>
             <option value="Toyota">Toyota</option>
             <option value="Ford">Ford</option>
-            <option value="Chevrolet">Chevrolet</option>
-          </Form.Control>
-        </Form.Group>
-      </div>
+          </Form.Select>
+        </Col>
+      </Row>
 
-      {/* Productos */}
-      <div className="product-grid">
-        {filteredProducts.map((product) => (
-          <Card key={product.id} className="product-card">
-            <div className="product-image"></div> {/* Imagen placeholder */}
-            <Card.Body className="d-flex flex-column justify-content-between">
-              <Card.Title>{product.name}</Card.Title>
-              <Card.Text>{product.price}</Card.Text>
-              <Button variant="danger" className="buy-button">Comprar ahora</Button>
-            </Card.Body>
-          </Card>
+      {/* Grid de productos */}
+      <Row xs={1} sm={2} md={3} lg={4} className="g-4 justify-content-center">
+        {filteredProducts.map(prod => (
+          <Col key={prod.id}>
+            <Card className="h-100 shadow-sm">
+              {prod.imagen_url
+                ? <Card.Img variant="top" src={prod.imagen_url} style={{ height: 200, objectFit: 'cover' }} />
+                : <div style={{ height: 200, background: "#eee" }} />
+              }
+              <Card.Body className="d-flex flex-column">
+                <Card.Title>{prod.nombre}</Card.Title>
+                <Card.Text className="mb-3 text-secondary">
+                  {new Intl.NumberFormat('es-CL', {style: 'currency',currency: 'CLP', }).format(prod.precio)}
+                </Card.Text>
+                <Button variant="danger" className="mt-auto">
+                  Comprar ahora
+                </Button>
+              </Card.Body>
+            </Card>
+          </Col>
         ))}
-      </div>
-    </div>
+      </Row>
+    </Container>
   );
 };
 
