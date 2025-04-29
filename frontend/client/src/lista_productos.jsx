@@ -3,6 +3,7 @@ import "./lista_productos.css";
 import React, { useState, useEffect } from "react";
 import { Card, Button, Row, Col, Form, Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Link } from 'react-router-dom';
 
 const ProductList = () => {
   const [products, setProducts]     = useState([]);
@@ -75,26 +76,42 @@ const ProductList = () => {
 
       {/* Grid de productos */}
       <Row xs={1} sm={2} md={3} lg={4} className="g-4 justify-content-center">
-        {filteredProducts.map(prod => (
-          <Col key={prod.id}>
-            <Card className="h-100 shadow-sm">
-              {prod.imagen_url
-                ? <Card.Img variant="top" src={prod.imagen_url} style={{ height: 200, objectFit: 'cover' }} />
-                : <div style={{ height: 200, background: "#eee" }} />
-              }
-              <Card.Body className="d-flex flex-column">
-                <Card.Title>{prod.nombre}</Card.Title>
-                <Card.Text className="mb-3 text-secondary">
-                  {new Intl.NumberFormat('es-CL', {style: 'currency',currency: 'CLP', }).format(prod.precio)}
-                </Card.Text>
-                <Button variant="danger" className="mt-auto">
-                  Comprar ahora
-                </Button>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
+  {filteredProducts.map(prod => (
+    <Col key={prod.id}>
+      <Link to={`/productos/${prod.id}`} style={{ textDecoration: 'none' }}>
+        <Card className="h-100 shadow-sm">
+          {/* 1. Aquí renderizamos la imagen si existe, sino un placeholder */}
+          {prod.imagen_url
+            ? <Card.Img
+                variant="top"
+                src={prod.imagen_url}
+                style={{ height: 180, objectFit: 'cover' }}
+              />
+            : <div style={{
+                height: 180,
+                backgroundColor: '#e0e0e0'
+              }} />
+          }
+
+          <Card.Body className="d-flex flex-column">
+            <Card.Title>{prod.nombre}</Card.Title>
+            <Card.Text className="mb-3 text-secondary">
+              {new Intl.NumberFormat('es-CL', {
+                style: 'currency',
+                currency: 'CLP',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+              }).format(prod.precio)}
+            </Card.Text>
+            <Button variant="danger" className="mt-auto">
+              Comprar ahora
+            </Button>
+          </Card.Body>
+        </Card>
+      </Link>
+    </Col>
+  ))}
+</Row>
     </Container>
   );
 };

@@ -5,6 +5,8 @@ import Login from "./login";
 import ProductList from "./lista_productos";
 import Dashboard from "./dashboard";
 import Navbar from "./navbar";
+import ProductDetail  from "./detalle_producto";
+
 import { jwtDecode } from "jwt-decode"; // Asegúrate de usar el paquete correcto de jwt-decode
 
 const App = () => {
@@ -56,8 +58,9 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/Tienda" element={<ProductList />} />
+        <Route path="/Productos" element={<ProductList />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/Productos/:id" element={<ProductDetail />} />
         {/* Solo el admin puede acceder al dashboard */}
         {userType === "admin" && <Route path="/dashboard" element={<Dashboard />} />}
       </Routes>

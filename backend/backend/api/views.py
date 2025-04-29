@@ -18,6 +18,8 @@ from django.db.models import Sum
 from django.db.models.functions import TruncDay, TruncMonth, TruncYear
 from .models import Producto, Boleta, DetalleBoleta
 from django.contrib.auth import get_user_model
+from .serializers import ProductoSerializer
+from django.shortcuts import get_object_or_404
 
 User = get_user_model()
 
@@ -52,13 +54,9 @@ class LoginView(APIView):
 
 @api_view(['GET'])
 def listar_productos(request):
-    """
-    Devuelve todos los productos con su stock y precio.
-    """
-    qs = Producto.objects.all().values(
-        'id', 'nombre', 'descripcion', 'precio', 'cantidad_disponible'
-    )
-    return Response(list(qs))
+    qs = Producto.objects.all()
+    ser = ProductoSerializer(qs, many=True, context={'request': request})
+    return Response(ser.data)
 
 
 @api_view(['GET'])
@@ -133,3 +131,23 @@ def estadisticas_ventas(request):
         'ventas_anios': list(ventas_anios),
     })
 
+@api_view(['GET'])
+def detalle_producto(request, producto_id):
+    # Recupera el objeto o da 404
+    producto = get_object_or_404(Producto, pk=producto_id)
+
+    # Construye la URL completa de la imagen si existe
+    if producto.imagen:
+        imagen_url = request.build_absolute_uri(producto.imagen.url)
+    else:
+        imagen_url = None
+
+    data = {
+        'id': producto.id,
+        'nombre': producto.nombre,
+        'descripcion': producto.descripcion,
+        'precio': float(producto.precio),
+        'cantidad_disponible': producto.cantidad_disponible,
+        'imagen_url': imagen_url,
+    }
+    return Response(data)

@@ -32,7 +32,7 @@ const Navbar = ({ userType, user }) => {
 
         {/* Menu items */}
         <div className="navbar-nav mx-auto">
-          <Link to="/Tienda" className="nav-link">
+          <Link to="/Productos" className="nav-link">
             Tienda
           </Link>
           <Link to="/nosotros" className="nav-link">
