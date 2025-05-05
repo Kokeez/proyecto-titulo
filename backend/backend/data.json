@@ -1,0 +1,2357 @@
+[
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "token_blacklist",
+    "model": "blacklistedtoken"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "token_blacklist",
+    "model": "outstandingtoken"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "admin",
+    "model": "logentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "auth",
+    "model": "permission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "auth",
+    "model": "group"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "contenttypes",
+    "model": "contenttype"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "sessions",
+    "model": "session"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "api",
+    "model": "producto"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "api",
+    "model": "usuario"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "api",
+    "model": "boleta"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "api",
+    "model": "detalleboleta"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "3sl0bytapcsosjtcc97qp0i0mczt919w",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hAGQTou3XsGMjNQqRpISrsy3l2bdKHb_977LxVpXUpce57jlNRZgTr8bkzyyHUD6U711rS0uswT603RO-362lJ-Xnb376BQL9-aIBhn88kLMpBxQYjGBB5HdsBHGjCxgCc0xlphNDaQBZTBh-wCe_X-AOV1N7g:1u9tPI:QHfIngCL7YoqW0R4Y3o2cNzvFDniaay2hCAjZDxX370",
+    "expire_date": "2025-05-13T22:26:28.581Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "bet5df2m7tuv6qe0fszs1kn5wmtd1j1w",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hAGQTou3XsGMjNQqRpISrsy3l2bdKHb_977LxVpXUpce57jlNRZgTr8bkzyyHUD6U711rS0uswT603RO-362lJ-Xnb376BQL9-aIBhn88kLMpBxQYjGBB5HdsBHGjCxgCc0xlphNDaQBZTBh-wCe_X-AOV1N7g:1u6xWB:YQt9iBIz4XID217qSXmEoTtt8p8c4qa01x-3FxGOzbQ",
+    "expire_date": "2025-05-05T20:13:27.482Z"
+  }
+},
+{
+  "model": "api.producto",
+  "pk": 1,
+  "fields": {
+    "nombre": "Cámara trasera adaptable",
+    "descripcion": "Sensor de movimiento y pantalla HD para retroceso",
+    "precio": "75000.00",
+    "cantidad_disponible": 86,
+    "imagen": "productos/camaratrasera.jpg"
+  }
+},
+{
+  "model": "api.producto",
+  "pk": 2,
+  "fields": {
+    "nombre": "Radio táctil",
+    "descripcion": "Radio de última generación con pantalla multicolor",
+    "precio": "120000.00",
+    "cantidad_disponible": 32,
+    "imagen": "productos/radiotactil.jpg"
+  }
+},
+{
+  "model": "api.producto",
+  "pk": 3,
+  "fields": {
+    "nombre": "Frenos eléctricos",
+    "descripcion": "Sistema de frenado con motor eléctrico integrado",
+    "precio": "200000.00",
+    "cantidad_disponible": 4,
+    "imagen": "productos/frenos.jpg"
+  }
+},
+{
+  "model": "api.producto",
+  "pk": 4,
+  "fields": {
+    "nombre": "Llanta 16\"",
+    "descripcion": "Llanta de aleación 16 pulgadas",
+    "precio": "65000.00",
+    "cantidad_disponible": 56,
+    "imagen": "productos/llanta.jpg"
+  }
+},
+{
+  "model": "api.producto",
+  "pk": 5,
+  "fields": {
+    "nombre": "Retrovisor",
+    "descripcion": "Retrovisor con ajuste eléctrico y anti‑deslumbrante",
+    "precio": "45000.00",
+    "cantidad_disponible": 87,
+    "imagen": "productos/retrovisor.jpg"
+  }
+},
+{
+  "model": "api.producto",
+  "pk": 6,
+  "fields": {
+    "nombre": "Espejo lateral",
+    "descripcion": "Espejo lateral cromado con luz integrada",
+    "precio": "55000.00",
+    "cantidad_disponible": 80,
+    "imagen": "productos/espejolateral.jpg"
+  }
+},
+{
+  "model": "api.producto",
+  "pk": 7,
+  "fields": {
+    "nombre": "Asiento deportivo",
+    "descripcion": "Asiento tapizado en cuero deportivo",
+    "precio": "150000.00",
+    "cantidad_disponible": 0,
+    "imagen": "productos/asiento-auto.png"
+  }
+},
+{
+  "model": "api.producto",
+  "pk": 8,
+  "fields": {
+    "nombre": "Volante multifunción",
+    "descripcion": "Volante cuero con controles integrados",
+    "precio": "110000.00",
+    "cantidad_disponible": 11,
+    "imagen": "productos/volante2.jpg"
+  }
+},
+{
+  "model": "api.producto",
+  "pk": 9,
+  "fields": {
+    "nombre": "Aromatizador auto",
+    "descripcion": "Aromatizador con fragancia fresca",
+    "precio": "15000.00",
+    "cantidad_disponible": 176,
+    "imagen": "productos/aromatizador.jpg"
+  }
+},
+{
+  "model": "api.producto",
+  "pk": 10,
+  "fields": {
+    "nombre": "Parabrisas",
+    "descripcion": "Parabrisas templado con sensor de lluvia",
+    "precio": "180000.00",
+    "cantidad_disponible": 0,
+    "imagen": "productos/parabrisas.jpg"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 1,
+  "fields": {
+    "boleta": 1,
+    "producto": 2,
+    "cantidad": 1,
+    "precio_unitario": "120.00",
+    "subtotal": "120.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 2,
+  "fields": {
+    "boleta": 1,
+    "producto": 7,
+    "cantidad": 2,
+    "precio_unitario": "150.00",
+    "subtotal": "300.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 3,
+  "fields": {
+    "boleta": 1,
+    "producto": 4,
+    "cantidad": 5,
+    "precio_unitario": "65.00",
+    "subtotal": "325.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 4,
+  "fields": {
+    "boleta": 2,
+    "producto": 3,
+    "cantidad": 4,
+    "precio_unitario": "200.00",
+    "subtotal": "800.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 5,
+  "fields": {
+    "boleta": 2,
+    "producto": 3,
+    "cantidad": 1,
+    "precio_unitario": "200.00",
+    "subtotal": "200.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 6,
+  "fields": {
+    "boleta": 2,
+    "producto": 3,
+    "cantidad": 2,
+    "precio_unitario": "200.00",
+    "subtotal": "400.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 7,
+  "fields": {
+    "boleta": 3,
+    "producto": 3,
+    "cantidad": 2,
+    "precio_unitario": "200.00",
+    "subtotal": "400.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 8,
+  "fields": {
+    "boleta": 3,
+    "producto": 1,
+    "cantidad": 3,
+    "precio_unitario": "75.00",
+    "subtotal": "225.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 9,
+  "fields": {
+    "boleta": 3,
+    "producto": 1,
+    "cantidad": 2,
+    "precio_unitario": "75.00",
+    "subtotal": "150.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 10,
+  "fields": {
+    "boleta": 4,
+    "producto": 4,
+    "cantidad": 3,
+    "precio_unitario": "65.00",
+    "subtotal": "195.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 11,
+  "fields": {
+    "boleta": 5,
+    "producto": 10,
+    "cantidad": 2,
+    "precio_unitario": "180.00",
+    "subtotal": "360.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 12,
+  "fields": {
+    "boleta": 5,
+    "producto": 5,
+    "cantidad": 5,
+    "precio_unitario": "45.00",
+    "subtotal": "225.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 13,
+  "fields": {
+    "boleta": 5,
+    "producto": 5,
+    "cantidad": 4,
+    "precio_unitario": "45.00",
+    "subtotal": "180.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 14,
+  "fields": {
+    "boleta": 6,
+    "producto": 5,
+    "cantidad": 2,
+    "precio_unitario": "45.00",
+    "subtotal": "90.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 15,
+  "fields": {
+    "boleta": 6,
+    "producto": 10,
+    "cantidad": 5,
+    "precio_unitario": "180.00",
+    "subtotal": "900.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 16,
+  "fields": {
+    "boleta": 6,
+    "producto": 2,
+    "cantidad": 5,
+    "precio_unitario": "120.00",
+    "subtotal": "600.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 17,
+  "fields": {
+    "boleta": 6,
+    "producto": 10,
+    "cantidad": 5,
+    "precio_unitario": "180.00",
+    "subtotal": "900.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 18,
+  "fields": {
+    "boleta": 6,
+    "producto": 8,
+    "cantidad": 5,
+    "precio_unitario": "110.00",
+    "subtotal": "550.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 19,
+  "fields": {
+    "boleta": 7,
+    "producto": 9,
+    "cantidad": 5,
+    "precio_unitario": "15.00",
+    "subtotal": "75.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 20,
+  "fields": {
+    "boleta": 7,
+    "producto": 4,
+    "cantidad": 4,
+    "precio_unitario": "65.00",
+    "subtotal": "260.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 21,
+  "fields": {
+    "boleta": 7,
+    "producto": 4,
+    "cantidad": 2,
+    "precio_unitario": "65.00",
+    "subtotal": "130.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 22,
+  "fields": {
+    "boleta": 7,
+    "producto": 10,
+    "cantidad": 5,
+    "precio_unitario": "180.00",
+    "subtotal": "900.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 23,
+  "fields": {
+    "boleta": 7,
+    "producto": 4,
+    "cantidad": 1,
+    "precio_unitario": "65.00",
+    "subtotal": "65.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 24,
+  "fields": {
+    "boleta": 8,
+    "producto": 7,
+    "cantidad": 4,
+    "precio_unitario": "150.00",
+    "subtotal": "600.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 25,
+  "fields": {
+    "boleta": 8,
+    "producto": 9,
+    "cantidad": 2,
+    "precio_unitario": "15.00",
+    "subtotal": "30.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 26,
+  "fields": {
+    "boleta": 8,
+    "producto": 9,
+    "cantidad": 2,
+    "precio_unitario": "15.00",
+    "subtotal": "30.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 27,
+  "fields": {
+    "boleta": 8,
+    "producto": 9,
+    "cantidad": 2,
+    "precio_unitario": "15.00",
+    "subtotal": "30.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 28,
+  "fields": {
+    "boleta": 9,
+    "producto": 6,
+    "cantidad": 3,
+    "precio_unitario": "55.00",
+    "subtotal": "165.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 29,
+  "fields": {
+    "boleta": 9,
+    "producto": 2,
+    "cantidad": 3,
+    "precio_unitario": "120.00",
+    "subtotal": "360.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 30,
+  "fields": {
+    "boleta": 10,
+    "producto": 7,
+    "cantidad": 1,
+    "precio_unitario": "150.00",
+    "subtotal": "150.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 31,
+  "fields": {
+    "boleta": 10,
+    "producto": 3,
+    "cantidad": 2,
+    "precio_unitario": "200.00",
+    "subtotal": "400.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 32,
+  "fields": {
+    "boleta": 10,
+    "producto": 10,
+    "cantidad": 1,
+    "precio_unitario": "180.00",
+    "subtotal": "180.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 33,
+  "fields": {
+    "boleta": 10,
+    "producto": 3,
+    "cantidad": 1,
+    "precio_unitario": "200.00",
+    "subtotal": "200.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 34,
+  "fields": {
+    "boleta": 11,
+    "producto": 8,
+    "cantidad": 1,
+    "precio_unitario": "110.00",
+    "subtotal": "110.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 35,
+  "fields": {
+    "boleta": 11,
+    "producto": 3,
+    "cantidad": 3,
+    "precio_unitario": "200.00",
+    "subtotal": "600.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 36,
+  "fields": {
+    "boleta": 11,
+    "producto": 5,
+    "cantidad": 4,
+    "precio_unitario": "45.00",
+    "subtotal": "180.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 37,
+  "fields": {
+    "boleta": 12,
+    "producto": 7,
+    "cantidad": 4,
+    "precio_unitario": "150.00",
+    "subtotal": "600.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 38,
+  "fields": {
+    "boleta": 12,
+    "producto": 7,
+    "cantidad": 2,
+    "precio_unitario": "150.00",
+    "subtotal": "300.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 39,
+  "fields": {
+    "boleta": 12,
+    "producto": 5,
+    "cantidad": 3,
+    "precio_unitario": "45.00",
+    "subtotal": "135.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 40,
+  "fields": {
+    "boleta": 12,
+    "producto": 3,
+    "cantidad": 1,
+    "precio_unitario": "200.00",
+    "subtotal": "200.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 41,
+  "fields": {
+    "boleta": 12,
+    "producto": 10,
+    "cantidad": 5,
+    "precio_unitario": "180.00",
+    "subtotal": "900.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 42,
+  "fields": {
+    "boleta": 13,
+    "producto": 5,
+    "cantidad": 4,
+    "precio_unitario": "45.00",
+    "subtotal": "180.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 43,
+  "fields": {
+    "boleta": 13,
+    "producto": 7,
+    "cantidad": 3,
+    "precio_unitario": "150.00",
+    "subtotal": "450.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 44,
+  "fields": {
+    "boleta": 13,
+    "producto": 4,
+    "cantidad": 2,
+    "precio_unitario": "65.00",
+    "subtotal": "130.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 45,
+  "fields": {
+    "boleta": 13,
+    "producto": 10,
+    "cantidad": 2,
+    "precio_unitario": "180.00",
+    "subtotal": "360.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 46,
+  "fields": {
+    "boleta": 14,
+    "producto": 3,
+    "cantidad": 4,
+    "precio_unitario": "200.00",
+    "subtotal": "800.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 47,
+  "fields": {
+    "boleta": 14,
+    "producto": 8,
+    "cantidad": 5,
+    "precio_unitario": "110.00",
+    "subtotal": "550.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 48,
+  "fields": {
+    "boleta": 14,
+    "producto": 7,
+    "cantidad": 1,
+    "precio_unitario": "150.00",
+    "subtotal": "150.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 49,
+  "fields": {
+    "boleta": 14,
+    "producto": 6,
+    "cantidad": 1,
+    "precio_unitario": "55.00",
+    "subtotal": "55.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 50,
+  "fields": {
+    "boleta": 15,
+    "producto": 2,
+    "cantidad": 3,
+    "precio_unitario": "120.00",
+    "subtotal": "360.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 51,
+  "fields": {
+    "boleta": 16,
+    "producto": 9,
+    "cantidad": 5,
+    "precio_unitario": "15.00",
+    "subtotal": "75.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 52,
+  "fields": {
+    "boleta": 16,
+    "producto": 9,
+    "cantidad": 2,
+    "precio_unitario": "15.00",
+    "subtotal": "30.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 53,
+  "fields": {
+    "boleta": 16,
+    "producto": 10,
+    "cantidad": 2,
+    "precio_unitario": "180.00",
+    "subtotal": "360.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 54,
+  "fields": {
+    "boleta": 16,
+    "producto": 3,
+    "cantidad": 1,
+    "precio_unitario": "200.00",
+    "subtotal": "200.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 55,
+  "fields": {
+    "boleta": 16,
+    "producto": 8,
+    "cantidad": 5,
+    "precio_unitario": "110.00",
+    "subtotal": "550.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 56,
+  "fields": {
+    "boleta": 17,
+    "producto": 10,
+    "cantidad": 2,
+    "precio_unitario": "180.00",
+    "subtotal": "360.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 57,
+  "fields": {
+    "boleta": 17,
+    "producto": 1,
+    "cantidad": 1,
+    "precio_unitario": "75.00",
+    "subtotal": "75.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 58,
+  "fields": {
+    "boleta": 18,
+    "producto": 7,
+    "cantidad": 5,
+    "precio_unitario": "150.00",
+    "subtotal": "750.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 59,
+  "fields": {
+    "boleta": 18,
+    "producto": 4,
+    "cantidad": 1,
+    "precio_unitario": "65.00",
+    "subtotal": "65.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 60,
+  "fields": {
+    "boleta": 18,
+    "producto": 3,
+    "cantidad": 1,
+    "precio_unitario": "200.00",
+    "subtotal": "200.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 61,
+  "fields": {
+    "boleta": 19,
+    "producto": 2,
+    "cantidad": 3,
+    "precio_unitario": "120.00",
+    "subtotal": "360.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 62,
+  "fields": {
+    "boleta": 20,
+    "producto": 3,
+    "cantidad": 3,
+    "precio_unitario": "200.00",
+    "subtotal": "600.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 63,
+  "fields": {
+    "boleta": 20,
+    "producto": 10,
+    "cantidad": 3,
+    "precio_unitario": "180.00",
+    "subtotal": "540.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 64,
+  "fields": {
+    "boleta": 21,
+    "producto": 1,
+    "cantidad": 3,
+    "precio_unitario": "75.00",
+    "subtotal": "225.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 65,
+  "fields": {
+    "boleta": 22,
+    "producto": 2,
+    "cantidad": 2,
+    "precio_unitario": "120.00",
+    "subtotal": "240.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 66,
+  "fields": {
+    "boleta": 23,
+    "producto": 9,
+    "cantidad": 4,
+    "precio_unitario": "15.00",
+    "subtotal": "60.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 67,
+  "fields": {
+    "boleta": 23,
+    "producto": 7,
+    "cantidad": 4,
+    "precio_unitario": "150.00",
+    "subtotal": "600.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 68,
+  "fields": {
+    "boleta": 23,
+    "producto": 9,
+    "cantidad": 2,
+    "precio_unitario": "15.00",
+    "subtotal": "30.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 69,
+  "fields": {
+    "boleta": 24,
+    "producto": 3,
+    "cantidad": 1,
+    "precio_unitario": "200.00",
+    "subtotal": "200.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 70,
+  "fields": {
+    "boleta": 25,
+    "producto": 5,
+    "cantidad": 5,
+    "precio_unitario": "45.00",
+    "subtotal": "225.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 71,
+  "fields": {
+    "boleta": 26,
+    "producto": 10,
+    "cantidad": 2,
+    "precio_unitario": "180.00",
+    "subtotal": "360.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 72,
+  "fields": {
+    "boleta": 26,
+    "producto": 8,
+    "cantidad": 5,
+    "precio_unitario": "110.00",
+    "subtotal": "550.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 73,
+  "fields": {
+    "boleta": 26,
+    "producto": 8,
+    "cantidad": 2,
+    "precio_unitario": "110.00",
+    "subtotal": "220.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 74,
+  "fields": {
+    "boleta": 27,
+    "producto": 6,
+    "cantidad": 2,
+    "precio_unitario": "55.00",
+    "subtotal": "110.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 75,
+  "fields": {
+    "boleta": 27,
+    "producto": 1,
+    "cantidad": 5,
+    "precio_unitario": "75.00",
+    "subtotal": "375.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 76,
+  "fields": {
+    "boleta": 27,
+    "producto": 7,
+    "cantidad": 3,
+    "precio_unitario": "150.00",
+    "subtotal": "450.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 77,
+  "fields": {
+    "boleta": 27,
+    "producto": 8,
+    "cantidad": 2,
+    "precio_unitario": "110.00",
+    "subtotal": "220.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 78,
+  "fields": {
+    "boleta": 27,
+    "producto": 4,
+    "cantidad": 2,
+    "precio_unitario": "65.00",
+    "subtotal": "130.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 79,
+  "fields": {
+    "boleta": 28,
+    "producto": 2,
+    "cantidad": 1,
+    "precio_unitario": "120.00",
+    "subtotal": "120.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 80,
+  "fields": {
+    "boleta": 28,
+    "producto": 6,
+    "cantidad": 3,
+    "precio_unitario": "55.00",
+    "subtotal": "165.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 81,
+  "fields": {
+    "boleta": 28,
+    "producto": 10,
+    "cantidad": 2,
+    "precio_unitario": "180.00",
+    "subtotal": "360.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 82,
+  "fields": {
+    "boleta": 29,
+    "producto": 10,
+    "cantidad": 4,
+    "precio_unitario": "180.00",
+    "subtotal": "720.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 83,
+  "fields": {
+    "boleta": 29,
+    "producto": 5,
+    "cantidad": 5,
+    "precio_unitario": "45.00",
+    "subtotal": "225.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 84,
+  "fields": {
+    "boleta": 29,
+    "producto": 5,
+    "cantidad": 1,
+    "precio_unitario": "45.00",
+    "subtotal": "45.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 85,
+  "fields": {
+    "boleta": 29,
+    "producto": 7,
+    "cantidad": 4,
+    "precio_unitario": "150.00",
+    "subtotal": "600.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 86,
+  "fields": {
+    "boleta": 29,
+    "producto": 8,
+    "cantidad": 4,
+    "precio_unitario": "110.00",
+    "subtotal": "440.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 87,
+  "fields": {
+    "boleta": 30,
+    "producto": 6,
+    "cantidad": 1,
+    "precio_unitario": "55.00",
+    "subtotal": "55.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 88,
+  "fields": {
+    "boleta": 30,
+    "producto": 4,
+    "cantidad": 4,
+    "precio_unitario": "65.00",
+    "subtotal": "260.00"
+  }
+},
+{
+  "model": "api.detalleboleta",
+  "pk": 89,
+  "fields": {
+    "boleta": 30,
+    "producto": 7,
+    "cantidad": 1,
+    "precio_unitario": "150.00",
+    "subtotal": "150.00"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add blacklisted token",
+    "content_type": [
+      "token_blacklist",
+      "blacklistedtoken"
+    ],
+    "codename": "add_blacklistedtoken"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change blacklisted token",
+    "content_type": [
+      "token_blacklist",
+      "blacklistedtoken"
+    ],
+    "codename": "change_blacklistedtoken"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete blacklisted token",
+    "content_type": [
+      "token_blacklist",
+      "blacklistedtoken"
+    ],
+    "codename": "delete_blacklistedtoken"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view blacklisted token",
+    "content_type": [
+      "token_blacklist",
+      "blacklistedtoken"
+    ],
+    "codename": "view_blacklistedtoken"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add outstanding token",
+    "content_type": [
+      "token_blacklist",
+      "outstandingtoken"
+    ],
+    "codename": "add_outstandingtoken"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change outstanding token",
+    "content_type": [
+      "token_blacklist",
+      "outstandingtoken"
+    ],
+    "codename": "change_outstandingtoken"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete outstanding token",
+    "content_type": [
+      "token_blacklist",
+      "outstandingtoken"
+    ],
+    "codename": "delete_outstandingtoken"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view outstanding token",
+    "content_type": [
+      "token_blacklist",
+      "outstandingtoken"
+    ],
+    "codename": "view_outstandingtoken"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "view_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "view_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "view_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "view_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "view_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add producto",
+    "content_type": [
+      "api",
+      "producto"
+    ],
+    "codename": "add_producto"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change producto",
+    "content_type": [
+      "api",
+      "producto"
+    ],
+    "codename": "change_producto"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete producto",
+    "content_type": [
+      "api",
+      "producto"
+    ],
+    "codename": "delete_producto"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view producto",
+    "content_type": [
+      "api",
+      "producto"
+    ],
+    "codename": "view_producto"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add user",
+    "content_type": [
+      "api",
+      "usuario"
+    ],
+    "codename": "add_usuario"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change user",
+    "content_type": [
+      "api",
+      "usuario"
+    ],
+    "codename": "change_usuario"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete user",
+    "content_type": [
+      "api",
+      "usuario"
+    ],
+    "codename": "delete_usuario"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view user",
+    "content_type": [
+      "api",
+      "usuario"
+    ],
+    "codename": "view_usuario"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add boleta",
+    "content_type": [
+      "api",
+      "boleta"
+    ],
+    "codename": "add_boleta"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change boleta",
+    "content_type": [
+      "api",
+      "boleta"
+    ],
+    "codename": "change_boleta"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete boleta",
+    "content_type": [
+      "api",
+      "boleta"
+    ],
+    "codename": "delete_boleta"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view boleta",
+    "content_type": [
+      "api",
+      "boleta"
+    ],
+    "codename": "view_boleta"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add detalle boleta",
+    "content_type": [
+      "api",
+      "detalleboleta"
+    ],
+    "codename": "add_detalleboleta"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change detalle boleta",
+    "content_type": [
+      "api",
+      "detalleboleta"
+    ],
+    "codename": "change_detalleboleta"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete detalle boleta",
+    "content_type": [
+      "api",
+      "detalleboleta"
+    ],
+    "codename": "delete_detalleboleta"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view detalle boleta",
+    "content_type": [
+      "api",
+      "detalleboleta"
+    ],
+    "codename": "view_detalleboleta"
+  }
+},
+{
+  "model": "api.usuario",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$bz5sQNH7DvaIiZ098QsLDL$H3PHFXRlDfbWsb+GNCwbW0AvFOpazWNWliaPs0TsGjI=",
+    "last_login": "2025-04-29T22:26:28.579Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-04-21T20:12:07.788Z",
+    "photo_url": null,
+    "email": "jorgereyes7c@gmail.com",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 1,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-03-29T23:46:54.069Z",
+    "total": "745.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 2,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-03-25T23:46:54.069Z",
+    "total": "1400.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 3,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-04-12T00:46:54.069Z",
+    "total": "775.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 4,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-04-11T00:46:54.069Z",
+    "total": "195.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 5,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-04-18T00:46:54.069Z",
+    "total": "765.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 6,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-03-23T23:46:54.069Z",
+    "total": "3040.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 7,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-04-22T00:46:54.069Z",
+    "total": "1430.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 8,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-03-31T23:46:54.069Z",
+    "total": "690.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 9,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-04-14T00:46:54.069Z",
+    "total": "525.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 10,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-04-07T00:46:54.069Z",
+    "total": "930.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 11,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-04-15T00:46:54.069Z",
+    "total": "890.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 12,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-04-16T00:46:54.069Z",
+    "total": "2135.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 13,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-04-02T23:46:54.069Z",
+    "total": "1120.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 14,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-04-14T00:46:54.069Z",
+    "total": "1555.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 15,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-04-15T00:46:54.069Z",
+    "total": "360.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 16,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-04-18T00:46:54.069Z",
+    "total": "1215.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 17,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-04-21T00:46:54.069Z",
+    "total": "435.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 18,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-04-07T00:46:54.069Z",
+    "total": "1015.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 19,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-04-05T23:46:54.069Z",
+    "total": "360.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 20,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-04-02T23:46:54.069Z",
+    "total": "1140.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 21,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-04-15T00:46:54.069Z",
+    "total": "225.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 22,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-04-12T00:46:54.069Z",
+    "total": "240.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 23,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-04-11T00:46:54.069Z",
+    "total": "690.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 24,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-03-27T23:46:54.069Z",
+    "total": "200.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 25,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-04-11T00:46:54.069Z",
+    "total": "225.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 26,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-03-28T23:46:54.069Z",
+    "total": "1130.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 27,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-03-24T23:46:54.069Z",
+    "total": "1285.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 28,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-04-03T23:46:54.069Z",
+    "total": "645.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 29,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-04-13T00:46:54.069Z",
+    "total": "2030.00"
+  }
+},
+{
+  "model": "api.boleta",
+  "pk": 30,
+  "fields": {
+    "usuario": [
+      "admin"
+    ],
+    "fecha": "2025-04-21T00:46:54.069Z",
+    "total": "465.00"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2025-04-29T22:37:59.185Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "api",
+      "producto"
+    ],
+    "object_id": "7",
+    "object_repr": "Asiento deportivo",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Imagen\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2025-04-29T22:41:41.102Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "api",
+      "producto"
+    ],
+    "object_id": "7",
+    "object_repr": "Asiento deportivo",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2025-04-29T22:43:31.545Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "api",
+      "producto"
+    ],
+    "object_id": "10",
+    "object_repr": "Parabrisas",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Imagen\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2025-04-29T22:45:52.409Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "api",
+      "producto"
+    ],
+    "object_id": "3",
+    "object_repr": "Frenos eléctricos",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Imagen\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2025-04-29T22:48:21.077Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "api",
+      "producto"
+    ],
+    "object_id": "8",
+    "object_repr": "Volante multifunción",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Imagen\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2025-04-29T22:54:14.671Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "api",
+      "producto"
+    ],
+    "object_id": "2",
+    "object_repr": "Radio táctil",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Imagen\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2025-04-29T22:55:36.189Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "api",
+      "producto"
+    ],
+    "object_id": "4",
+    "object_repr": "Llanta 16\"",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Imagen\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2025-04-29T22:56:26.445Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "api",
+      "producto"
+    ],
+    "object_id": "6",
+    "object_repr": "Espejo lateral",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Imagen\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2025-04-29T22:57:53.278Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "api",
+      "producto"
+    ],
+    "object_id": "1",
+    "object_repr": "Cámara trasera adaptable",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Imagen\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2025-04-29T22:59:56.557Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "api",
+      "producto"
+    ],
+    "object_id": "5",
+    "object_repr": "Retrovisor",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Imagen\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2025-04-29T23:00:33.361Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "api",
+      "producto"
+    ],
+    "object_id": "9",
+    "object_repr": "Aromatizador auto",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Imagen\"]}}]"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "admin"
+    ],
+    "jti": "f6d14606acbc4a61aa2dbfd0081127c1",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0NTM1MzA3MywiaWF0IjoxNzQ1MjY2NjczLCJqdGkiOiJmNmQxNDYwNmFjYmM0YTYxYWEyZGJmZDAwODExMjdjMSIsInVzZXJfaWQiOjF9.IQ2wSLJ8w_wnBqHkE4u5RskAssUnShm1E5pF4iGnAUM",
+    "created_at": "2025-04-21T20:17:53.760Z",
+    "expires_at": "2025-04-22T20:17:53Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "admin"
+    ],
+    "jti": "2c1aea80248c406fa211b05820014f1b",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0NTM1NDg4MywiaWF0IjoxNzQ1MjY4NDgzLCJqdGkiOiIyYzFhZWE4MDI0OGM0MDZmYTIxMWIwNTgyMDAxNGYxYiIsInVzZXJfaWQiOjF9.j84jkyyhUP4Zm-lmU3Uwy75qiOrU1gmEYm9xlM8DTYo",
+    "created_at": "2025-04-21T20:48:03.969Z",
+    "expires_at": "2025-04-22T20:48:03Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 3,
+  "fields": {
+    "user": [
+      "admin"
+    ],
+    "jti": "57b7f9ff66704f26b30b73f9b854de21",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0NTM2NzI5OCwiaWF0IjoxNzQ1MjgwODk4LCJqdGkiOiI1N2I3ZjlmZjY2NzA0ZjI2YjMwYjczZjliODU0ZGUyMSIsInVzZXJfaWQiOjF9.3NKnrGXMel7ZOG9wZsc3FEqqC7_7yFCG4k94XmwsKmM",
+    "created_at": "2025-04-22T00:14:58.692Z",
+    "expires_at": "2025-04-23T00:14:58Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 4,
+  "fields": {
+    "user": [
+      "admin"
+    ],
+    "jti": "13d7bd3472e8430cb813e9775574fe51",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0NTM2OTEzMCwiaWF0IjoxNzQ1MjgyNzMwLCJqdGkiOiIxM2Q3YmQzNDcyZTg0MzBjYjgxM2U5Nzc1NTc0ZmU1MSIsInVzZXJfaWQiOjF9.hs2x-EXFp8Gyueo3FaGpJoL58OmWSQoc_q8BasNI7so",
+    "created_at": "2025-04-22T00:45:30.380Z",
+    "expires_at": "2025-04-23T00:45:30Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 5,
+  "fields": {
+    "user": [
+      "admin"
+    ],
+    "jti": "2661feca4f1041c38ff3a518edee99cf",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0NTM3MTYyMCwiaWF0IjoxNzQ1Mjg1MjIwLCJqdGkiOiIyNjYxZmVjYTRmMTA0MWMzOGZmM2E1MThlZGVlOTljZiIsInVzZXJfaWQiOjF9.8R23bUSF_qXM14CPRGbetHi52MtxAxgEDMNMik2UxyY",
+    "created_at": "2025-04-22T01:27:00.848Z",
+    "expires_at": "2025-04-23T01:27:00Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 6,
+  "fields": {
+    "user": [
+      "admin"
+    ],
+    "jti": "03fbf148196c4a3d8ebdf1948c99b5f3",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0NTY4ODUyMSwiaWF0IjoxNzQ1NjAyMTIxLCJqdGkiOiIwM2ZiZjE0ODE5NmM0YTNkOGViZGYxOTQ4Yzk5YjVmMyIsInVzZXJfaWQiOjF9.E-xhScDJzJR6V2u3YaUZkkxiSc3dfKDq5btC-LK6uMI",
+    "created_at": "2025-04-25T17:28:41.797Z",
+    "expires_at": "2025-04-26T17:28:41Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 7,
+  "fields": {
+    "user": [
+      "admin"
+    ],
+    "jti": "0a8112be9ef0498dbc121954df85b632",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0NjA0MTYxNCwiaWF0IjoxNzQ1OTU1MjE0LCJqdGkiOiIwYTgxMTJiZTllZjA0OThkYmMxMjE5NTRkZjg1YjYzMiIsInVzZXJfaWQiOjF9.cEZn5JM5MjU_0fIpvDV4zZN81IRN46nMBENeb2adAyc",
+    "created_at": "2025-04-29T19:33:34.702Z",
+    "expires_at": "2025-04-30T19:33:34Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 8,
+  "fields": {
+    "user": [
+      "admin"
+    ],
+    "jti": "07450b9e254349969468ccaba4fb6bb1",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0NjA0MjU4NSwiaWF0IjoxNzQ1OTU2MTg1LCJqdGkiOiIwNzQ1MGI5ZTI1NDM0OTk2OTQ2OGNjYWJhNGZiNmJiMSIsInVzZXJfaWQiOjF9.sSeKa6ExwLeQaetxOZpmFS9iDyQcBqnyIc90t9DTWPE",
+    "created_at": "2025-04-29T19:49:45.042Z",
+    "expires_at": "2025-04-30T19:49:45Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 9,
+  "fields": {
+    "user": [
+      "admin"
+    ],
+    "jti": "6bcfa2a7a7de4a1a9fe6edad81a0f879",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0NjA1MDg1OCwiaWF0IjoxNzQ1OTY0NDU4LCJqdGkiOiI2YmNmYTJhN2E3ZGU0YTFhOWZlNmVkYWQ4MWEwZjg3OSIsInVzZXJfaWQiOjF9.c3sce5B7pvirQDQCgC3u4l_DxeQv1spnFIph6iEpEvs",
+    "created_at": "2025-04-29T22:07:38.789Z",
+    "expires_at": "2025-04-30T22:07:38Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 10,
+  "fields": {
+    "user": [
+      "admin"
+    ],
+    "jti": "a6cbb871800e4257942b02d4b722d1de",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0NjA1NDA0MSwiaWF0IjoxNzQ1OTY3NjQxLCJqdGkiOiJhNmNiYjg3MTgwMGU0MjU3OTQyYjAyZDRiNzIyZDFkZSIsInVzZXJfaWQiOjF9.Ng8W_EMsaQr2JOd3InHy29NdjpzgjGrDkVtizxMh3Vg",
+    "created_at": "2025-04-29T23:00:41.420Z",
+    "expires_at": "2025-04-30T23:00:41Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 11,
+  "fields": {
+    "user": [
+      "admin"
+    ],
+    "jti": "5a93b72ad1814bef9bf893b87f181f11",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc0NjQ4MTM0MywiaWF0IjoxNzQ2Mzk0OTQzLCJqdGkiOiI1YTkzYjcyYWQxODE0YmVmOWJmODkzYjg3ZjE4MWYxMSIsInVzZXJfaWQiOjF9.F7P_v7TagOw3PCqTUgxFER4xMY3rze3xwc-u7i_orec",
+    "created_at": "2025-05-04T21:42:23.201Z",
+    "expires_at": "2025-05-05T21:42:23Z"
+  }
+}
+]

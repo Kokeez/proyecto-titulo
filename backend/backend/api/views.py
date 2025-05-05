@@ -21,6 +21,12 @@ from django.contrib.auth import get_user_model
 from .serializers import ProductoSerializer
 from django.shortcuts import get_object_or_404
 
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from django.utils import timezone
+from .models import Boleta, DetalleBoleta, Producto
+from .serializers import LineItemSerializer
+
 User = get_user_model()
 
 class LoginView(APIView):
@@ -151,3 +157,86 @@ def detalle_producto(request, producto_id):
         'imagen_url': imagen_url,
     }
     return Response(data)
+
+@api_view(['GET'])
+def estadisticas_ventas(request):
+    # Ventas por día (últimos 7 días)
+    ventas_dias = (
+        DetalleBoleta.objects
+          .annotate(dia=TruncDay('boleta__fecha'))
+          .values('dia')
+          .annotate(total=Sum('subtotal'))
+          .order_by('dia')
+    )
+    # Ventas por mes (año corriente)
+    ventas_meses = (
+        DetalleBoleta.objects
+          .annotate(mes=TruncMonth('boleta__fecha'))
+          .values('mes')
+          .annotate(total=Sum('subtotal'))
+          .order_by('mes')
+    )
+    return Response({
+        'ventas_dias': list(ventas_dias),
+        'ventas_meses': list(ventas_meses),
+    })
+
+@api_view(['GET'])
+def buscar_productos_live(request):
+    """
+    GET /api/productos/search/?q=texto
+    Devuelve hasta 10 productos cuyo nombre contenga 'texto'.
+    """
+    q = request.query_params.get('q', '').strip()
+    if not q:
+        return Response([], status=200)
+
+    qs = Producto.objects.filter(nombre__icontains=q)[:10]
+    ser = ProductoSerializer(qs, many=True, context={'request': request})
+    return Response(ser.data)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def checkout(request):
+    # LineItems: [{"product_id":1,"quantity":2}, ...]
+    serializer = LineItemSerializer(data=request.data.get('items', []), many=True)
+    serializer.is_valid(raise_exception=True)
+    items = serializer.validated_data
+
+    # Crea la boleta
+    boleta = Boleta.objects.create(
+        usuario=request.user,
+        fecha=timezone.now(),
+        total=0  # lo ajustaremos luego
+    )
+
+    total = 0
+    for line in items:
+        prod = Producto.objects.get(pk=line['product_id'])
+        qty  = line['quantity']
+        subtotal = prod.precio * qty
+
+        # Crea cada línea
+        DetalleBoleta.objects.create(
+            boleta=boleta,
+            producto=prod,
+            cantidad=qty,
+            precio_unitario=prod.precio,
+            subtotal=subtotal
+        )
+
+        # Resta stock
+        prod.cantidad_disponible = max(0, prod.cantidad_disponible - qty)
+        prod.save()
+
+        total += subtotal
+
+    # Actualiza total de la boleta
+    boleta.total = total
+    boleta.save()
+
+    return Response({
+        'boleta_id': boleta.id,
+        'fecha': boleta.fecha,
+        'total': total,
+    })
