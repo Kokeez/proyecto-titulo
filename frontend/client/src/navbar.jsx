@@ -3,6 +3,8 @@ import { Link, useNavigate }                 from 'react-router-dom';
 import {Dropdown,InputGroup,FormControl,ListGroup} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './navbar.css';
+import { FaWarehouse } from 'react-icons/fa'; 
+import { FaCar } from 'react-icons/fa';
 
 function Navbar({ userType, user }) {
   // Hooks
@@ -61,8 +63,13 @@ function Navbar({ userType, user }) {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
-        {/* Logo */}
-        <Link to="/" className="navbar-brand">
+        {/* BRAND: icono + texto, SIEMPRE */}
+        <Link to="/" className="navbar-brand d-flex align-items-center">
+          <FaWarehouse 
+            size={24} 
+            className="me-2" 
+            style={{ color: '#ffd200' }} 
+          />
           <span className="vulcastock-logo">VulcaStock</span>
         </Link>
 
