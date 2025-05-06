@@ -6,8 +6,9 @@ import ProductList from "./lista_productos";
 import Dashboard from "./dashboard";
 import Navbar from "./navbar";
 import ProductDetail  from "./detalle_producto";
+import CartPage from './carritoPage';
 
-import { jwtDecode } from "jwt-decode"; // Asegúrate de usar el paquete correcto de jwt-decode
+import { jwtDecode } from "jwt-decode";
 
 const App = () => {
   const location = useLocation();
@@ -61,6 +62,7 @@ const App = () => {
         <Route path="/Productos" element={<ProductList />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/Productos/:id" element={<ProductDetail />} />
+        <Route path="/carrito" element={<CartPage />} />
         {/* Solo el admin puede acceder al dashboard */}
         {userType === "admin" && <Route path="/dashboard" element={<Dashboard />} />}
       </Routes>

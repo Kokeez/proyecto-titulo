@@ -1,5 +1,4 @@
 import "./lista_productos.css";
-// lista_productos.jsx
 import React, { useState, useEffect } from "react";
 import { Card, Button, Row, Col, Form, Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";

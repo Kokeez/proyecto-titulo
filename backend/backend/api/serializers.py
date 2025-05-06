@@ -38,3 +38,7 @@ class ProductoSerializer(serializers.ModelSerializer):
         if obj.imagen and request:
             return request.build_absolute_uri(obj.imagen.url)
         return None
+    
+class LineItemSerializer(serializers.Serializer):
+    product_id = serializers.IntegerField()
+    quantity   = serializers.IntegerField(min_value=1)
