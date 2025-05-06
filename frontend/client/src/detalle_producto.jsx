@@ -1,5 +1,4 @@
-// src/ProductDetail.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, Link }          from 'react-router-dom';
 import {
   Breadcrumb,
@@ -7,20 +6,21 @@ import {
   Row,
   Col,
   Card,
-  Button,
-  Form,
-  InputGroup,
-  FormControl
+  Button
 } from 'react-bootstrap';
+import { CartContext }  from './carritoContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './detalle_producto.css';  // Aquí pondremos estilos extra
+import './detalle_producto.css';                       
 
 const ProductDetail = () => {
   const { id } = useParams();
   const [prod, setProd]       = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError]     = useState('');
-  const [qty, setQty]         = useState(0);
+  const [qty, setQty]         = useState(1);
+
+  // accede a la función addItem de tu contexto
+  const { addItem } = useContext(CartContext);
 
   useEffect(() => {
     fetch(`http://localhost:8000/api/producto/${id}/`)
@@ -36,12 +36,24 @@ const ProductDetail = () => {
   if (loading) return <Container className="pt-5 text-center">Cargando…</Container>;
   if (error)   return <Container className="pt-5 text-center text-danger">{error}</Container>;
 
-  // Calcula total
-  const total = (prod.precio * qty) || 0;
+  // total para mostrar
+  const total = prod.precio * qty;
+
+  // función que dispara la adición al carrito
+  const handleAddToCart = () => {
+    addItem({
+      id:     prod.id,
+      nombre: prod.nombre,
+      precio: prod.precio,
+      imagen_url: prod.imagen_url
+    }, qty);
+
+    alert(`${prod.nombre} x${qty} agregado al carrito`);
+  };
 
   return (
     <Container fluid className="product-detail py-4">
-      {/* Breadcrumb + buscador */}
+      {/* Breadcrumb */}
       <Row className="align-items-center mb-4">
         <Col md={6}>
           <Breadcrumb>
@@ -54,7 +66,7 @@ const ProductDetail = () => {
 
       {/* Contenido */}
       <Row>
-        {/* Imagen grande */}
+        {/* Imagen */}
         <Col lg={6} className="mb-4">
           {prod.imagen_url
             ? <Card.Img
@@ -67,7 +79,7 @@ const ProductDetail = () => {
           }
         </Col>
 
-        {/* Detalles */}
+        {/* Detalles y compra */}
         <Col lg={6}>
           <h2>{prod.nombre}</h2>
           <p><strong>Cantidad vendidas:</strong> {prod.vendidas ?? 0}</p>
@@ -95,9 +107,10 @@ const ProductDetail = () => {
 
           <hr />
 
+          {/* Selector de cantidad */}
           <div className="d-flex align-items-center mb-3">
             <span className="me-3">Cantidad:</span>
-            <Button variant="light" onClick={() => setQty(q => Math.max(0, q - 1))}>−</Button>
+            <Button variant="light" onClick={() => setQty(q => Math.max(1, q - 1))}>−</Button>
             <span className="mx-3 qty-display">{qty}</span>
             <Button variant="light" onClick={() => setQty(q => q + 1)}>+</Button>
             <span className="ms-auto total-display">
@@ -109,7 +122,14 @@ const ProductDetail = () => {
             </span>
           </div>
 
-          <Button variant="dark" size="lg">Comprar</Button>
+          {/* Botón de agregar al carrito */}
+          <Button 
+            variant="danger" 
+            size="lg" 
+            onClick={handleAddToCart}
+          >
+            Agregar al carrito
+          </Button>
         </Col>
       </Row>
     </Container>
@@ -117,4 +137,5 @@ const ProductDetail = () => {
 };
 
 export default ProductDetail;
+
 

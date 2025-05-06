@@ -1,10 +1,10 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
-const CartContext = createContext();
+// AHORA LO EXPORTAMOS
+export const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [items, setItems] = useState(() => {
-    // carga inicial desde localStorage
     const saved = localStorage.getItem('cart');
     return saved ? JSON.parse(saved) : [];
   });
@@ -33,11 +33,14 @@ export function CartProvider({ children }) {
 
   const clearCart = () => setItems([]);
 
-  const value = { items, addItem, removeItem, clearCart };
-
-  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
+  return (
+    <CartContext.Provider value={{ items, addItem, removeItem, clearCart }}>
+      {children}
+    </CartContext.Provider>
+  );
 }
 
+// Hook de conveniencia
 export function useCart() {
   return useContext(CartContext);
 }

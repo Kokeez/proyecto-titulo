@@ -11,7 +11,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Router>
     <CartProvider>
-    <UserProvider>  {/* Envuelves la app con el contexto de usuario */}
+    <UserProvider>
       <App />
     </UserProvider>
     </CartProvider>

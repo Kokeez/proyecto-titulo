@@ -8,7 +8,7 @@ import Navbar from "./navbar";
 import ProductDetail  from "./detalle_producto";
 import CartPage from './carritoPage';
 
-import { jwtDecode } from "jwt-decode"; // Asegúrate de usar el paquete correcto de jwt-decode
+import { jwtDecode } from "jwt-decode";
 
 const App = () => {
   const location = useLocation();

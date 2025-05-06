@@ -73,7 +73,7 @@ function Navbar({ userType, user }) {
           <span className="vulcastock-logo">VulcaStock</span>
         </Link>
 
-        {/* Toggle para moviles */}
+        {/* Toggle para celular */}
         <button
           className="navbar-toggler"
           type="button"

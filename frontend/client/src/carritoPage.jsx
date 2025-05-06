@@ -1,4 +1,3 @@
-// src/CartPage.jsx
 import React, { useState } from 'react';
 import { useCart } from './carritoContext';
 import { Button, Table, Container } from 'react-bootstrap';
