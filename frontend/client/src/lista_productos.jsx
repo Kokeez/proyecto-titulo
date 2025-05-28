@@ -1,34 +1,68 @@
-import "./lista_productos.css";
+// src/ lista_productos.jsx
 import React, { useState, useEffect } from "react";
-import { Card, Button, Row, Col, Form, Container } from "react-bootstrap";
+import { Card, Button, Row, Col, Form, Container, Spinner } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Link } from 'react-router-dom';
+import "./lista_productos.css";
+import { useNavigate } from 'react-router-dom';
 
 const ProductList = () => {
-  const [products, setProducts]     = useState([]);
-  const [filter, setFilter]         = useState({ type: "", year: "", brand: "" });
-  const [loading, setLoading]       = useState(true);
-  const [error, setError]           = useState("");
-
+  const [products, setProducts] = useState([]);
+  const [filter, setFilter]     = useState({ type: "", year: "", brand: "" });
+  const [loading, setLoading]   = useState(true);
+  const [error, setError]       = useState("");
+  const navigate                 = useNavigate();
   useEffect(() => {
-    fetch("http://localhost:8000/api/productos/")
+    const token = localStorage.getItem('access');
+    if (!token) {
+      // si no está logueado, lo enviamos al login
+      navigate('/login');
+      return;
+    }
+
+    fetch("http://localhost:8000/api/productos/", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      }
+    })
       .then(res => {
+        if (res.status === 401 || res.status === 403) {
+          // token inválido o expirado
+          navigate('/login');
+          throw new Error("No autorizado");
+        }
         if (!res.ok) throw new Error("Error al cargar productos");
         return res.json();
       })
       .then(data => setProducts(data))
-      .catch(() => setError("No se pudieron cargar los productos"))
+      .catch(err => setError(err.message))
       .finally(() => setLoading(false));
-  }, []);
+  }, [navigate]);
 
-  const filteredProducts = products.filter(p => 
+  // Filtrado simple por nombre
+  const filteredProducts = products.filter(p =>
     (filter.type  === "" || p.nombre.includes(filter.type)) &&
     (filter.year  === "" || p.nombre.includes(filter.year)) &&
     (filter.brand === "" || p.nombre.includes(filter.brand))
   );
 
-  if (loading) return <Container className="text-center py-5">Cargando productos…</Container>;
-  if (error)   return <Container className="text-center py-5 text-danger">{error}</Container>;
+  if (loading) {
+    return (
+      <Container className="text-center py-5">
+        <Spinner animation="border" role="status" />
+        <div>Cargando productos…</div>
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container className="text-center py-5 text-danger">
+        {error}
+      </Container>
+    );
+  }
 
   return (
     <Container className="py-5">
@@ -80,10 +114,10 @@ const ProductList = () => {
       <Link to={`/productos/${prod.id}`} style={{ textDecoration: 'none' }}>
         <Card className="h-100 shadow-sm">
           {/* 1. Aquí renderizamos la imagen si existe, sino un placeholder */}
-          {prod.imagen_url
+          {prod.imagen
             ? <Card.Img
                 variant="top"
-                src={prod.imagen_url}
+                src={prod.imagen}
                 style={{ height: 180, objectFit: 'cover' }}
               />
             : <div style={{
@@ -116,4 +150,5 @@ const ProductList = () => {
 };
 
 export default ProductList;
+
 

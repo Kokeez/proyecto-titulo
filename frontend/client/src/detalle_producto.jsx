@@ -10,7 +10,8 @@ import {
 } from 'react-bootstrap';
 import { CartContext }  from './carritoContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './detalle_producto.css';                       
+import './detalle_producto.css';
+import { toast }  from 'react-toastify';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -47,9 +48,14 @@ const ProductDetail = () => {
       precio: prod.precio,
       imagen_url: prod.imagen_url
     }, qty);
-
-    alert(`${prod.nombre} x${qty} agregado al carrito`);
-  };
+// se agrega toast para que se vea mas bonito
+    toast.success(
+        `${prod.nombre} x${qty} agregado al carrito — Total: ${new Intl.NumberFormat('es-CL',{
+          style:'currency',currency:'CLP',minimumFractionDigits:0
+        }).format(prod.precio * qty)}`,
+        { autoClose: 3000 }
+      )
+    }
 
   return (
     <Container fluid className="product-detail py-4">

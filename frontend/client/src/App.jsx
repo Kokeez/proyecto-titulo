@@ -3,10 +3,12 @@ import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Home from "./home";
 import Login from "./login";
 import ProductList from "./lista_productos";
+import ProductList2 from "./lista_admin";
 import Dashboard from "./dashboard";
 import Navbar from "./navbar";
 import ProductDetail  from "./detalle_producto";
 import CartPage from './carritoPage';
+import ProductForm from './productForm';
 
 import { jwtDecode } from "jwt-decode";
 
@@ -60,6 +62,9 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/Productos" element={<ProductList />} />
+        <Route path="/ProductosAdmin" element={<ProductList2 />} />
+        <Route path="/productos/nuevo" element={<ProductForm />} />
+        <Route path="/productos/:id/editar" element={<ProductForm />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/Productos/:id" element={<ProductDetail />} />
         <Route path="/carrito" element={<CartPage />} />

@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 import "./login.css";
 
+
 const Login = () => {
+  const navigate = useNavigate();
     useEffect(() => {
         // Añadir la clase "login-page" cuando estamos en la página de login
         document.body.classList.add("login-page");
@@ -41,13 +45,9 @@ const Login = () => {
         localStorage.setItem("userType", data.is_admin ? "admin" : "user");  // Guardar tipo de usuario
         localStorage.setItem("username", data.username); // Guardar nombre de usuario
         localStorage.setItem("photoUrl", data.photo_url || "https://www.w3schools.com/howto/img_avatar.png"); // Foto por defecto
-  
-        // Verificar que los valores estén guardados correctamente
-        console.log("Datos guardados en localStorage:", localStorage.getItem("userType"), localStorage.getItem("username"), localStorage.getItem("photoUrl"));
-  
-        alert("Login exitoso");
+        toast.success('¡Login exitoso!');
         // Redirigir a la página principal o dashboard
-        window.location.href = "/"; // Redirigir a Home (puedes cambiar a /dashboard)
+        navigate("/");
       } else {
         setError(data.error);
       }

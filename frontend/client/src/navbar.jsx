@@ -99,12 +99,18 @@ function Navbar({ userType, user }) {
                 Carrito
               </Link>
             </li>
+            <li className="nav-item">
+                <Link to="/productosAdmin" className="nav-link">
+                  Modificar
+                </Link>
+              </li>
             {userType === "admin" && (
               <li className="nav-item">
                 <Link to="/dashboard" className="nav-link">
                   Dashboard
                 </Link>
               </li>
+
             )}
           </ul>
 

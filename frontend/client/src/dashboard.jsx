@@ -12,7 +12,7 @@ export default function Dashboard() {
   const [error, setError]           = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/estadisticas_ventas/')
+    fetch('http://localhost:8000/api/estadisticas-ventas/')
       .then(res => {
         if (!res.ok) throw new Error('Error al cargar estadísticas');
         return res.json();

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { Container, Row, Col, Button, Card } from "react-bootstrap";
 import "./home.css";
@@ -6,6 +6,14 @@ import repuestosImage from './images/repuesto.jpg';
 import serviciosImage from './images/servicios.jpg';
 
 const Home = () => {
+    const [featured, setFeatured] = useState([]);
+  
+    useEffect(() => {
+      fetch('http://localhost:8000/api/productos/top/')
+        .then(res => res.json())
+        .then(setFeatured)
+        .catch(err => console.error('Error cargando top products:', err));
+    }, []);
   return (
     <div>
       {/* Hero */}
@@ -29,46 +37,45 @@ const Home = () => {
 
       {/* Productos destacados */}
       <section className="destacados py-5">
-        <Container>
-          <h2 className="text-center mb-4">Todo en vehículos lo encuentra con nosotros</h2>
-          <Row className="g-4">
-            <Col md={4}>
-              <Card className="h-100 shadow-sm">
-                <Card.Body className="d-flex flex-column">
-                  <span className="etiqueta-nuevo mb-2">Producto nuevo</span>
-                  <div className="placeholder-img mb-3" style={{ height: "150px" }}></div>
-                  <Card.Title>Cámara trasera adaptable</Card.Title>
-                  <Card.Text>Cámara con sensor de movimiento y pantalla HD para visualizar el retroceso del auto</Card.Text>
-                  <Button variant="danger">Comprar ahora</Button>
-                </Card.Body>
-              </Card>
+      <Container>
+        <h2 className="text-center mb-4">Productos más vendidos</h2>
+        <Row className="g-4">
+          {featured.map(prod => (
+            <Col md={4} key={prod.id}>
+              <Link to={`/productos/${prod.id}`} className="text-decoration-none">
+                <Card className="h-100 shadow-sm">
+                  {prod.imagen_url && (
+                    <Card.Img
+                      variant="top"
+                      src={prod.imagen_url}
+                      style={{ height: '180px', objectFit: 'cover' }}
+                    />
+                  )}
+                  <Card.Body className="d-flex flex-column">
+                    <Card.Title>{prod.nombre}</Card.Title>
+                    <Card.Text className="flex-grow-1">
+                      {prod.descripcion.slice(0, 60)}…
+                    </Card.Text>
+                    <div className="mt-auto">
+                      <strong>
+                        {new Intl.NumberFormat('es-CL', {
+                          style: 'currency',
+                          currency: 'CLP',
+                          minimumFractionDigits: 0
+                        }).format(prod.precio)}
+                      </strong>
+                      <Button variant="danger" size="sm" className="float-end">
+                        Ver
+                      </Button>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Link>
             </Col>
-
-            <Col md={4}>
-              <Card className="h-100 shadow-sm">
-                <Card.Body className="d-flex flex-column">
-                  <div className="placeholder-img mb-3" style={{ height: "150px" }}></div>
-                  <Card.Title>Radio táctil</Card.Title>
-                  <Card.Text>Última generación en radio para distintos tipos de autos</Card.Text>
-                  <Button variant="danger">Comprar ahora</Button>
-                </Card.Body>
-              </Card>
-            </Col>
-
-            <Col md={4}>
-              <Card className="h-100 shadow-sm">
-                <Card.Body className="d-flex flex-column">
-                  <span className="etiqueta-nuevo mb-2">Producto nuevo</span>
-                  <div className="placeholder-img mb-3" style={{ height: "150px" }}></div>
-                  <Card.Title>Frenos eléctricos</Card.Title>
-                  <Card.Text>Mayor seguridad con lo último en frenos</Card.Text>
-                  <Button variant="danger">Comprar ahora</Button>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </section>
+          ))}
+        </Row>
+      </Container>
+    </section>
 
       {/* Footer */}
       <footer className="footer bg-dark text-white py-4">

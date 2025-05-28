@@ -38,7 +38,17 @@ class ProductoSerializer(serializers.ModelSerializer):
         if obj.imagen and request:
             return request.build_absolute_uri(obj.imagen.url)
         return None
-    
+
 class LineItemSerializer(serializers.Serializer):
     product_id = serializers.IntegerField()
     quantity   = serializers.IntegerField(min_value=1)
+
+class ProductoSerializer(serializers.ModelSerializer):
+
+    imagen = serializers.ImageField(required=False, allow_null=True)
+
+    class Meta:
+        model = Producto
+        fields = ['id', 'nombre', 'descripcion', 'precio',
+                  'cantidad_disponible', 'imagen']
+        fields = ['id','nombre','descripcion','precio','cantidad_disponible','imagen']
