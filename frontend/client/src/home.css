@@ -1,59 +1,215 @@
+/* home.css */
+
+/* 1) Definición de paleta */
+:root {
+  --color-primary:   #E10600;  /* Rojo (íconos y acentos del logo) */
+  --color-secondary: #00A651;  /* Verde (arco del velocímetro) */
+  --color-accent:    #FFD100;  /* Amarillo (arco del velocímetro) */
+  --color-dark:      #000000;  /* Negro */
+  --color-light:     #F5F5F5;  /* Gris muy claro */
+  --color-text:      #333333;  /* Texto principal */
+}
+
+/* 2) Reset/Body */
+body {
+  background-color: var(--color-light);
+  color: var(--color-text);
+  margin: 0;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* 3) Navbar */
+.navbar {
+  background-color: var(--color-dark) !important;
+}
+.navbar .navbar-brand {
+  color: var(--color-primary) !important;
+  font-weight: bold;
+}
+.navbar .nav-link {
+  color: #ffffff !important;
+}
+.navbar .nav-link:hover {
+  color: var(--color-accent) !important;
+}
+
+/* 4) Hero con Parallax */
 .hero {
-    padding: 30px;
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin-top: 50px; /* Mueve el título hacia abajo */
-  }
-  
-  .hero h1 {
-    font-size: 3rem;
-    font-weight: bold;
-    color: #1b1b1b;
-    margin-bottom: 30px;
-  }
-  
-  /* Para la fila de categorías */
-  .categorias {
-    display: flex;
-    justify-content: center;  /* Centra los elementos horizontalmente */
-    width: 100%;
-    margin-top: 30px;
-  }
-  
-  /* Caja de cada categoría */
-  .categoria-box {
-    background-color: #fff;
-    padding: 30px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    border-radius: 10px;
-    width: 500px; /* Ajusta el tamaño */
-    height: 300px;
-    transition: transform 0.3s ease; /* Agrega transición */
-    margin: 0 250px;
-  }
-  
-  /* Hover de categorías */
-  .categoria-box:hover {
-    transform: translateX(10px); /* Mueve las cajas un poco a la derecha cuando se pasa el mouse */
-  }
-  
-  .categoria-box .placeholder-img {
-    width: 100%;
-    height: 200px;
-    background-color: #ccc;
-    margin-bottom: 10px;
-    border-radius: 50px;
-    object-fit: cover;
-  }
-  
-  
-  .categoria-box p {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #333;
-  }
-  
+  position: relative;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #ffffff;
+}
+.parallax-background {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  z-index: -1;
+  filter: brightness(0.5);
+}
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  color: #FFD100;
+}
+.hero .lead {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+/* 5) Formulario de búsqueda */
+.hero .form-control {
+  width: 60%;
+  border-radius: 0.25rem 0 0 0.25rem;
+  border-color: #ffffff;
+  background: rgba(255,255,255,0.2);
+  color: #ffffff;
+}
+.hero .form-control::placeholder {
+  color: rgba(255,255,255,0.7);
+}
+.hero .btn-primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  border-radius: 0 0.25rem 0.25rem 0;
+}
+.hero .btn-primary:hover {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+/* 6) Cajas de categoría bajo el Hero */
+.categoria-box {
+  background: rgba(0,0,0,0.4);
+  padding: 1rem;
+  border-radius: 0.75rem;
+  transition: background 0.3s;
+}
+.categoria-box:hover {
+  background: rgba(0,0,0,0.6);
+}
+.categoria-box img {
+  width: 100%;
+  border-radius: 0.5rem;
+}
+.categoria-box p {
+  margin-top: 0.5rem;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+/* 7) Sección de Servicios (3 tarjetas) */
+.servicios {
+  background-color: var(--color-light);
+  padding: 4rem 0;
+}
+.servicios h2 {
+  color: var(--color-dark);
+  margin-bottom: 2rem;
+}
+.servicios .card {
+  border: none;
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.servicios .card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+}
+.servicios .card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+.servicios .card-title {
+  color: var(--color-dark);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.servicios .card-text {
+  color: #666666;
+  font-size: 0.95rem;
+}
+.servicios .btn-primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  border-radius: 0.25rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+}
+.servicios .btn-primary:hover {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+/* 8) Productos destacados */
+.destacados .card {
+  border: none;
+  border-radius: 0.75rem;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.destacados .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+.destacados .card-title {
+  color: var(--color-dark);
+}
+.destacados .btn-danger {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.destacados .btn-danger:hover {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+/* 9) Footer */
+.footer {
+  background-color: var(--color-dark);
+  color: #cccccc;
+  padding: 2rem 0;
+}
+.footer h4 {
+  color: #ffffff;
+}
+.footer ul {
+  padding: 0;
+  list-style: none;
+}
+.footer a {
+  color: #cccccc;
+  text-decoration: none;
+}
+.footer a:hover {
+  color: var(--color-accent);
+}
+.footer .social span {
+  color: #ffffff;
+  font-size: 1.1rem;
+}
+
+.card-img-bg {
+  height: 200px;                /* misma altura que antes */
+  background-size: cover;       /* cubre todo sin deformar */
+  background-position: center;  /* centra el recorte */
+  background-repeat: no-repeat;
+  border-top-left-radius: 0.75rem;   /* coincide con el border-radius de la card */
+  border-top-right-radius: 0.75rem;
+}
+
+.card-img-bg-180 {
+  width: 100%;
+  height: 180px;              /* misma altura que antes */
+  background-size: cover;     /* cubre todo el contenedor */
+  background-position: center;/* centra la imagen */
+  background-repeat: no-repeat;
+  border-top-left-radius: 0.75rem;
+  border-top-right-radius: 0.75rem;
+}

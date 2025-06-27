@@ -1,6 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
-// AHORA LO EXPORTAMOS
 export const CartContext = createContext();
 
 export function CartProvider({ children }) {
@@ -13,21 +12,33 @@ export function CartProvider({ children }) {
     localStorage.setItem('cart', JSON.stringify(items));
   }, [items]);
 
-  const addItem = (product, qty = 1) => {
+  const addItem = (item, qty = 1) => {
+    // extraemos el precio de cualquiera de estas claves:
+    const rawPrice = item.precio_base ?? item.precio ?? item.price;
+    const price    = parseFloat(rawPrice);
+  
+    if (!item || isNaN(price) || isNaN(qty) || qty <= 0) {
+      console.error("Producto o cantidad inválida:", item, qty);
+      return;
+    }
+  
+    const type = item.type === 'servicio' ? 'servicio' : 'producto';
+  
     setItems(curr => {
-      const exists = curr.find(i => i.product.id === product.id);
+      const exists = curr.find(i => i.product.id === item.id);
       if (exists) {
         return curr.map(i =>
-          i.product.id === product.id
+          i.product.id === item.id
             ? { ...i, quantity: i.quantity + qty }
             : i
         );
       }
-      return [...curr, { product, quantity: qty }];
+      // guardamos también price en product para facilitar el render
+      return [...curr, { product: { ...item, precio: price }, quantity: qty, type }];
     });
   };
 
-  const removeItem = productId => {
+  const removeItem = (productId) => {
     setItems(curr => curr.filter(i => i.product.id !== productId));
   };
 
@@ -40,7 +51,6 @@ export function CartProvider({ children }) {
   );
 }
 
-// Hook de conveniencia
 export function useCart() {
   return useContext(CartContext);
 }

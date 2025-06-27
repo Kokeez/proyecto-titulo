@@ -19,7 +19,7 @@ function Navbar({ userType, user }) {
   const toggleMenu = () => setMenuVisible(v => !v);
 
   const handleLogout = () => {
-    ['access','refresh','userType','username','photoUrl']
+    ['access','refresh','userType','nickname','photoUrl']
       .forEach(k => localStorage.removeItem(k));
     navigate('/login');
   };

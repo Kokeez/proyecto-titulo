@@ -4,10 +4,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate
-from rest_framework import status
+from rest_framework import status, generics, permissions
 from django.contrib.auth.models import User
 from datetime import timedelta
-from .serializers import LoginSerializer
 from django.http import JsonResponse
 from django.db.models import Sum
 from datetime import datetime
@@ -16,52 +15,92 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.db.models import Sum
 from django.db.models.functions import TruncDay, TruncMonth, TruncYear
-from .models import Producto, Boleta, DetalleBoleta
+from .models import Producto, Boleta, DetalleBoleta, Servicio, Boleta, Vendedor
 from django.contrib.auth import get_user_model
-from .serializers import ProductoSerializer
 from django.shortcuts import get_object_or_404
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from django.utils import timezone
-from .models import Boleta, DetalleBoleta, Producto
-from .serializers import LineItemSerializer
+from .models import Boleta, DetalleBoleta, Producto, Producto
 
 from rest_framework import viewsets, permissions
 from rest_framework.parsers import MultiPartParser, FormParser
-from .models     import Producto
-from .serializers import ProductoSerializer
+
+from django.contrib.auth import authenticate, get_user_model
+from rest_framework import viewsets, permissions, status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
+from datetime import timedelta
+from .serializers import (
+    UsuarioSerializer,
+    UsuarioRegistrationSerializer,
+    VendedorSerializer,
+    VehiculoSerializer,
+    ProductoSerializer,
+    ProductoSerializer,
+    LoginSerializer,
+    ServicioSerializer,
+    BoletaSerializer,
+    LineItemSerializer,
+)
 
 User = get_user_model()
 
-class LoginView(APIView):
-    permission_classes = []
+"USUARIO EN GENERAL LOGIN, CRUD, ETC."
+class RegisterView(APIView):
+    permission_classes = [permissions.AllowAny]
 
     def post(self, request):
-        username = request.data.get('username')
-        password = request.data.get('password')
-
-        # Autenticar al usuario
-        user = authenticate(username=username, password=password)
-
-        if user is not None:
-            # Crear tokens
+        serializer = UsuarioRegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            # Generar tokens
             refresh = RefreshToken.for_user(user)
-            access_token = refresh.access_token
-            # Establecer la expiración del access_token a 30 minutos
-            access_token.set_exp(lifetime=timedelta(minutes=30))  # Establecer la expiración del token
+            access = refresh.access_token
+            access.set_exp(lifetime=timedelta(minutes=30))
 
-            # Crear la respuesta con la información del usuario
             return Response({
-                'refresh': str(refresh),  # El refresh token se convierte a string
-                'access': str(access_token),  # El access token se convierte a string
-                'user_id': user.id,
-                'username': user.username,
-                'is_admin': user.is_superuser,  # Verificar si es admin
-                'photo_url': user.profile.photo_url if hasattr(user, 'profile') else None,  # Foto de perfil (si tienes un modelo de perfil)
+                'refresh': str(refresh),
+                'access': str(access),
+                'user': UsuarioSerializer(user).data
+            }, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LoginView(APIView):
+    """
+    Vista para login con nickname + contraseña.
+    Devuelve tokens JWT + datos del usuario.
+    """
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        nickname = request.data.get('nickname') or request.data.get('username')
+        password = request.data.get('password')
+        user = authenticate(request, nickname=nickname, password=password)
+        if user:
+            refresh = RefreshToken.for_user(user)
+            access = refresh.access_token
+            access.set_exp(lifetime=timedelta(minutes=30))
+            return Response({
+                'refresh': str(refresh),
+                'access': str(access),
+                'user': UsuarioSerializer(user).data
             })
-        else:
-            return Response({'error': 'Credenciales Invalidas'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UsuarioViewSet(viewsets.ModelViewSet):
+    """
+    CRUD completo de Usuarios. Solo accesible por admins.
+    """
+    queryset = User.objects.all()
+    serializer_class = UsuarioSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+    # Los campos modificables se definen en el serializer
 
 @api_view(['GET'])
 def listar_productos(request):
@@ -132,22 +171,50 @@ def estadisticas_ventas(request):
     # Ventas por día (últimos 7 días)
     ventas_dias = (
         DetalleBoleta.objects
-          .annotate(dia=TruncDay('boleta__fecha'))
+          .filter(boleta__fecha_venta__gte='2025-06-01')  # Ajusta la fecha según tus necesidades
+          .annotate(dia=TruncDay('boleta__fecha_venta'))
           .values('dia')
           .annotate(total=Sum('subtotal'))
           .order_by('dia')
     )
+
     # Ventas por mes (año corriente)
     ventas_meses = (
         DetalleBoleta.objects
-          .annotate(mes=TruncMonth('boleta__fecha'))
+          .filter(boleta__fecha_venta__year=2025)  # Ajusta el año según tus necesidades
+          .annotate(mes=TruncMonth('boleta__fecha_venta'))
           .values('mes')
           .annotate(total=Sum('subtotal'))
           .order_by('mes')
     )
+
+    # Ventas por tipo de producto/servicio
+    ventas_tipo = (
+        DetalleBoleta.objects
+          .values('producto__tipo')  # Asumiendo que el producto tiene un campo 'tipo'
+          .annotate(total=Sum('subtotal'))
+    )
+
+    # Ventas por vendedor
+    ventas_vendedor = (
+        Boleta.objects
+          .values('vendedor__nombre')
+          .annotate(total=Sum('total'))
+    )
+
+    # Ventas por estado de la boleta (Pagada/Pendiente/Anulada)
+    ventas_estado = (
+        Boleta.objects
+          .values('estado')
+          .annotate(total=Sum('total'))
+    )
+
     return Response({
         'ventas_dias': list(ventas_dias),
         'ventas_meses': list(ventas_meses),
+        'ventas_tipo': list(ventas_tipo),
+        'ventas_vendedor': list(ventas_vendedor),
+        'ventas_estado': list(ventas_estado),
     })
 
 @api_view(['GET'])
@@ -168,64 +235,71 @@ def buscar_productos_live(request):
 @permission_classes([IsAuthenticated])
 def checkout(request):
     # LineItems: [{"product_id":1,"quantity":2}, ...]
-    serializer = LineItemSerializer(data=request.data.get('items', []), many=True)
-    serializer.is_valid(raise_exception=True)
-    items = serializer.validated_data
-
-    # Crea la boleta
+    items = request.data.get('items', [])
+    total = 0
+    
     boleta = Boleta.objects.create(
         usuario=request.user,
-        fecha=timezone.now(),
+        vendedor_id=request.data.get('vendedor'),  # Asigna el vendedor recibido
+        fecha_venta=timezone.now(),
         total=0  # lo ajustaremos luego
     )
-
-    total = 0
+    
     for line in items:
-        prod = Producto.objects.get(pk=line['product_id'])
-        qty  = line['quantity']
-        subtotal = prod.precio * qty
+        if line['type'] == 'producto':  # Si el item es un producto
+            prod = Producto.objects.get(pk=line['product_id'])
+            qty = line['quantity']
+            subtotal = prod.precio * qty
+            DetalleBoleta.objects.create(
+                boleta=boleta,
+                producto=prod,
+                cantidad=qty,
+                precio_unitario=prod.precio,
+                subtotal=subtotal
+            )
+            prod.cantidad_disponible = max(0, prod.cantidad_disponible - qty)
+            prod.save()
+            total += subtotal
+        
+        elif line['type'] == 'servicio':  # Si el item es un servicio
+            servicio = Servicio.objects.get(pk=line['product_id'])
+            qty = line['quantity']
+            subtotal = servicio.precio_base * qty
+            DetalleBoleta.objects.create(
+                boleta=boleta,
+                servicio=servicio,
+                cantidad=qty,
+                precio_unitario=servicio.precio_base,
+                subtotal=subtotal
+            )
+            total += subtotal
 
-        # Crea cada línea
-        DetalleBoleta.objects.create(
-            boleta=boleta,
-            producto=prod,
-            cantidad=qty,
-            precio_unitario=prod.precio,
-            subtotal=subtotal
-        )
-
-        # Resta stock
-        prod.cantidad_disponible = max(0, prod.cantidad_disponible - qty)
-        prod.save()
-
-        total += subtotal
-
-    # Actualiza total de la boleta
     boleta.total = total
     boleta.save()
 
     return Response({
         'boleta_id': boleta.id,
-        'fecha': boleta.fecha,
+        'fecha': boleta.fecha_venta,
         'total': total,
     })
 
+
+
 @api_view(['GET'])
 def top_products(request):
+    # Anotamos cuántas unidades de cada producto se han vendido
     productos = (
         Producto.objects
-                .annotate(total_vendido=Sum('detalleboleta__cantidad'))
-                .order_by('-total_vendido')[:3]
+                .annotate(vendidas=Sum('detalle_boletas__cantidad'))
+                .order_by('-vendidas')[:3]
     )
 
     data = []
     for p in productos:
-        # si tiene imagen, construye la URL absoluta, si no, None
-        imagen_url = (
-            request.build_absolute_uri(p.imagen.url)
-            if p.imagen and hasattr(p.imagen, 'url')
-            else None
-        )
+        # Construimos la URL absoluta de la imagen si existe
+        imagen_url = None
+        if p.imagen and hasattr(p.imagen, 'url'):
+            imagen_url = request.build_absolute_uri(p.imagen.url)
 
         data.append({
             'id':          p.id,
@@ -233,8 +307,9 @@ def top_products(request):
             'descripcion': p.descripcion,
             'precio':      float(p.precio),
             'imagen_url':  imagen_url,
-            'vendidas':    p.total_vendido or 0,
+            'vendidas':    int(p.vendidas or 0),
         })
+
     return Response(data)
 
 class ProductoViewSet(viewsets.ModelViewSet):
@@ -258,3 +333,91 @@ class ProductoViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response(serializer.data)
+
+
+
+class ServicioListAPIView(generics.ListAPIView):
+    """
+    GET /api/servicios/ → lista todos los servicios
+    """
+    queryset = Servicio.objects.all()
+    serializer_class = ServicioSerializer
+    permission_classes = [permissions.AllowAny]
+
+
+class ServicioDetailAPIView(generics.RetrieveAPIView):
+    """
+    GET /api/servicios/{id}/ → detalle de un servicio
+    """
+    queryset = Servicio.objects.all()
+    serializer_class = ServicioSerializer
+    permission_classes = [permissions.AllowAny]
+    
+"lo vendido y el general total de ventas"
+
+class ProductoDetailAPIView(generics.RetrieveAPIView):
+    """
+    GET /api/producto/{id}/ → detalle de un producto
+    """
+    queryset = Producto.objects.all()
+    serializer_class = ProductoSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        # Recuperar el producto
+        producto = self.get_object()
+        
+        # Calcular la cantidad vendida sumando las ventas relacionadas
+        cantidad_vendida = producto.boletas.aggregate(Sum('cantidad'))['cantidad__sum'] or 0
+        
+        # Calcular el total generado
+        total_generado = cantidad_vendida * producto.precio
+        
+        # Serializar los datos
+        serializer = self.get_serializer(producto)
+        data = serializer.data
+        
+        # Agregar los nuevos campos al resultado
+        data['vendidas'] = cantidad_vendida
+        data['total_generado'] = total_generado
+        
+        return Response(data)
+"Para la pagina de boleta de venta"
+@api_view(['GET'])
+def listar_boletas(request):
+    boletas = Boleta.objects.all()
+    data = BoletaSerializer(boletas, many=True).data
+    return Response(data)
+class BoletaDetailAPIView(generics.RetrieveUpdateAPIView):
+    queryset = Boleta.objects.all()
+    serializer_class = BoletaSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def update(self, request, *args, **kwargs):
+        boleta = self.get_object()
+        # Actualizar el estado de la boleta
+        boleta.estado = request.data.get('estado', boleta.estado)
+        boleta.save()
+        return Response({'message': 'Estado de boleta actualizado'})
+
+@api_view(['GET'])
+def vendedor_list(request):
+    """
+    GET /api/vendedores/ → lista todos los vendedores
+    """
+    vendedores = Vendedor.objects.all()
+    serializer = VendedorSerializer(vendedores, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def vendedor_detail(request, pk):
+    """
+    GET /api/vendedores/{id}/ → detalle de un vendedor
+    """
+    try:
+        vendedor = Vendedor.objects.get(pk=pk)
+    except Vendedor.DoesNotExist:
+        return Response({'error': 'Vendedor no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+    
+    serializer = VendedorSerializer(vendedor)
+    return Response(serializer.data)

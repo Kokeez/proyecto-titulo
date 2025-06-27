@@ -1,0 +1,11 @@
+/* services.css */
+.servicios .card {
+    border: none;
+    border-radius: 1rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .servicios .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+  }
+  

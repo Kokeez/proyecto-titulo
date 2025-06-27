@@ -1,27 +1,32 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useParams, Link }          from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import {
   Breadcrumb,
   Container,
   Row,
   Col,
   Card,
-  Button
+  Button,
+  Form
 } from 'react-bootstrap';
-import { CartContext }  from './carritoContext';
+import { CartContext } from './carritoContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './detalle_producto.css';
-import { toast }  from 'react-toastify';
+import { toast } from 'react-toastify';
+import { useUser } from './UserContext';  // Para acceder al contexto de usuario
 
 const ProductDetail = () => {
   const { id } = useParams();
-  const [prod, setProd]       = useState(null);
+  const [prod, setProd] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError]     = useState('');
-  const [qty, setQty]         = useState(1);
+  const [error, setError] = useState('');
+  const [qty, setQty] = useState(1);
 
   // accede a la función addItem de tu contexto
   const { addItem } = useContext(CartContext);
+
+  // Para obtener información del usuario actual
+  const { user } = useUser();  // Accedemos al usuario desde el contexto
 
   useEffect(() => {
     fetch(`http://localhost:8000/api/producto/${id}/`)
@@ -35,7 +40,7 @@ const ProductDetail = () => {
   }, [id]);
 
   if (loading) return <Container className="pt-5 text-center">Cargando…</Container>;
-  if (error)   return <Container className="pt-5 text-center text-danger">{error}</Container>;
+  if (error) return <Container className="pt-5 text-center text-danger">{error}</Container>;
 
   // total para mostrar
   const total = prod.precio * qty;
@@ -43,19 +48,33 @@ const ProductDetail = () => {
   // función que dispara la adición al carrito
   const handleAddToCart = () => {
     addItem({
-      id:     prod.id,
+      id: prod.id,
       nombre: prod.nombre,
       precio: prod.precio,
       imagen_url: prod.imagen_url
     }, qty);
-// se agrega toast para que se vea mas bonito
     toast.success(
-        `${prod.nombre} x${qty} agregado al carrito — Total: ${new Intl.NumberFormat('es-CL',{
-          style:'currency',currency:'CLP',minimumFractionDigits:0
-        }).format(prod.precio * qty)}`,
-        { autoClose: 3000 }
-      )
+      `${prod.nombre} x${qty} agregado al carrito — Total: ${new Intl.NumberFormat('es-CL',{
+        style:'currency',currency:'CLP',minimumFractionDigits:0
+      }).format(prod.precio * qty)}`,
+      { autoClose: 3000 }
+    );
+  };
+
+  const handleQtyChange = (e) => {
+    const value = parseInt(e.target.value, 10);
+    // Si es un número y no excede el stock
+    if (!isNaN(value) && value <= prod.cantidad_disponible && value >= 1) {
+      setQty(value);
+    } else if (value > prod.cantidad_disponible) {
+      // Si la cantidad excede el stock
+      setQty(prod.cantidad_disponible);
+      toast.error(`No puedes agregar más de ${prod.cantidad_disponible} unidades`);
+    } else {
+      // Si el valor no es válido
+      setQty(1);
     }
+  };
 
   return (
     <Container fluid className="product-detail py-4">
@@ -88,27 +107,25 @@ const ProductDetail = () => {
         {/* Detalles y compra */}
         <Col lg={6}>
           <h2>{prod.nombre}</h2>
-          <p><strong>Cantidad vendidas:</strong> {prod.vendidas ?? 0}</p>
-          <p>
-            <strong>Total generado:</strong>{' '}
-            {new Intl.NumberFormat('es-CL', {
-              style: 'currency',
-              currency: 'CLP',
-              minimumFractionDigits: 0
-            }).format((prod.vendidas ?? 0) * prod.precio)}
-          </p>
+          {/* Si no es administrador, ocultamos estas partes */}
+          {user && user.rol === 'Administrador' && (
+            <>
+              <p><strong>Cantidad vendidas:</strong> {prod.vendidas ?? 0}</p>
+              <p>
+                <strong>Total generado:</strong>{' '}
+                {new Intl.NumberFormat('es-CL', {
+                  style: 'currency',
+                  currency: 'CLP',
+                  minimumFractionDigits: 0
+                }).format((prod.vendidas ?? 0) * prod.precio)}
+              </p>
+            </>
+          )}
 
-          <div className="d-flex align-items-center mb-3">
-            <span className="me-2">Calidad & Reseñas Clientes</span>
-            {[...Array(5)].map((_, i) => (
-              <span key={i} className="star">★</span>
-            ))}
-            <small className="text-muted ms-2">438 visitas</small>
-          </div>
-
+          {/* Descripción del producto */}
           <div className="mb-4">
-            <Button variant="outline-primary" className="me-2">Ver Producto</Button>
-            <Button variant="secondary">Ver Características</Button>
+            <h4>Descripción:</h4>
+            <p>{prod.descripcion}</p>
           </div>
 
           <hr />
@@ -117,8 +134,16 @@ const ProductDetail = () => {
           <div className="d-flex align-items-center mb-3">
             <span className="me-3">Cantidad:</span>
             <Button variant="light" onClick={() => setQty(q => Math.max(1, q - 1))}>−</Button>
-            <span className="mx-3 qty-display">{qty}</span>
-            <Button variant="light" onClick={() => setQty(q => q + 1)}>+</Button>
+            <Form.Control 
+              type="number" 
+              value={qty} 
+              onChange={handleQtyChange} 
+              min="1" 
+              max={prod.cantidad_disponible}
+              className="mx-3" 
+              style={{ width: "80px" }}
+            />
+            <Button variant="light" onClick={() => setQty(q => Math.min(prod.cantidad_disponible, q + 1))}>+</Button>
             <span className="ms-auto total-display">
               {new Intl.NumberFormat('es-CL', {
                 style: 'currency',
@@ -143,5 +168,6 @@ const ProductDetail = () => {
 };
 
 export default ProductDetail;
+
 
 

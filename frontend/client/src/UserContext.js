@@ -6,19 +6,19 @@ const UserContext = createContext();
 
 // Proveedor del contexto
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser]       = useState(null);
   const [userType, setUserType] = useState(null);
 
   useEffect(() => {
-    const loggedInUser = localStorage.getItem("user");
-    const loggedInUserType = localStorage.getItem("userType");
+    // 1) Leemos el JSON completo
+    const storedUser = localStorage.getItem("user");
+    const storedType = localStorage.getItem("userType");
 
-    if (loggedInUser && loggedInUserType) {
-      setUser({
-        name: localStorage.getItem("username"),
-        photoUrl: localStorage.getItem("photoUrl"),
-      });
-      setUserType(loggedInUserType);
+    if (storedUser) {
+      // 2) Parseamos el JSON para recuperar nickname, foto, rol, etc.
+      const parsed = JSON.parse(storedUser);
+      setUser(parsed);
+      setUserType(storedType);
     }
   }, []);
 

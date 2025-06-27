@@ -1,75 +1,84 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import Home from "./home";
-import Login from "./login";
-import ProductList from "./lista_productos";
-import ProductList2 from "./lista_admin";
-import Dashboard from "./dashboard";
-import Navbar from "./navbar";
-import ProductDetail  from "./detalle_producto";
-import CartPage from './carritoPage';
-import ProductForm from './productForm';
-
 import { jwtDecode } from "jwt-decode";
 
+import Home         from "./home";
+import Login        from "./login";
+import ProductList  from "./lista_productos";
+import ProductList2 from "./lista_admin";
+import Dashboard    from "./dashboard";
+import Navbar       from "./navbar";
+import ProductDetail from "./detalle_producto";
+import CartPage     from "./carritoPage";
+import ProductForm  from "./productForm";
+import Services from "./servicios";
+import ServiceDetail from "./serviceDetail";
+import BoletaList from "./lista_Boleta";
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+
+  const [user, setUser]         = useState(null);
   const [userType, setUserType] = useState(null);
 
   useEffect(() => {
-    const loggedInUser = localStorage.getItem("username");
-    const loggedInUserType = localStorage.getItem("userType");
-    const photoUrl = localStorage.getItem("photoUrl");
     const accessToken = localStorage.getItem("access");
+    const storedUser  = localStorage.getItem("user");
+    const storedType  = localStorage.getItem("userType");
 
-    if (loggedInUser && loggedInUserType && accessToken) {
-      // Decodificamos el token y verificamos la expiración
-      const decodedToken = jwtDecode(accessToken);
-      const currentTime = Date.now() / 1000;
-
-      // Si el token ha expirado
-      if (decodedToken.exp < currentTime) {
-        // Eliminar datos y redirigir a login si el token ha expirado
-        localStorage.removeItem("access");
-        localStorage.removeItem("refresh");
-        localStorage.removeItem("userType");
-        localStorage.removeItem("username");
-        localStorage.removeItem("photoUrl");
-        navigate("/login");
-      } else {
-        setUser({
-          name: loggedInUser,
-          photoUrl: photoUrl || "https://www.w3schools.com/howto/img_avatar.png",
-        });
-        setUserType(loggedInUserType);
-      }
-    } else {
-      // Si no hay usuario logueado, redirigimos al login
+    // Si no hay token o usuario, forzar login
+    if (!accessToken || !storedUser) {
       if (location.pathname !== "/login") {
         navigate("/login");
       }
+      return;
     }
+
+    // 1) Decodificar y verificar expiración
+    const { exp } = jwtDecode(accessToken);
+    const now     = Date.now() / 1000;
+    if (exp < now) {
+      localStorage.clear();
+      navigate("/login");
+      return;
+    }
+
+    // 2) Parsear el objeto user y actualizar estado
+    const parsedUser = JSON.parse(storedUser);
+    setUser({
+      name: parsedUser.nickname,
+      photoUrl: parsedUser.photoUrl || "https://www.w3schools.com/howto/img_avatar.png",
+    });
+    setUserType(storedType);
+
+    // Si estamos en login y ya autenticados, redirigir al Home
+    if (location.pathname === "/login") {
+      navigate("/");
+    }
+
   }, [location.pathname, navigate]);
 
   return (
     <div>
-      {/* Mostrar Navbar solo si no estamos en la página de login */}
-      {location.pathname !== "/login" && <Navbar userType={userType} user={user} />}
+      {/* Navbar oculto en /login */}
+      {location.pathname !== "/login" && (
+        <Navbar user={user} userType={userType} />
+      )}
 
       <Routes>
-        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Home />} />
         <Route path="/Productos" element={<ProductList />} />
         <Route path="/ProductosAdmin" element={<ProductList2 />} />
         <Route path="/productos/nuevo" element={<ProductForm />} />
         <Route path="/productos/:id/editar" element={<ProductForm />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={userType === "admin" ? <Dashboard /> : <Login />} />
         <Route path="/Productos/:id" element={<ProductDetail />} />
         <Route path="/carrito" element={<CartPage />} />
-        {/* Solo el admin puede acceder al dashboard */}
-        {userType === "admin" && <Route path="/dashboard" element={<Dashboard />} />}
+        <Route path="/servicios" element={<Services />} />
+        <Route path="/servicios/:id" element={<ServiceDetail />} />
+        <Route path="/boletas" element={<BoletaList />} />
+        {/* ...otras rutas... */}
       </Routes>
     </div>
   );

@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCart } from './carritoContext';
-import { Button, Table, Container } from 'react-bootstrap';
+import { Button, Table, Container, Form } from 'react-bootstrap';
 
 export default function CartPage() {
   const { items, removeItem, clearCart } = useCart();
-  const [loading, setLoading]            = useState(false);
-  const [error, setError]                = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [vendedorId, setVendedorId] = useState('');
+  const [vendedores, setVendedores] = useState([]);
+
+  useEffect(() => {
+    // Obtener la lista de vendedores
+    fetch('http://localhost:8000/api/vendedores/')  // Ajusta la URL si es necesario
+      .then(res => res.json())
+      .then(data => setVendedores(data))
+      .catch(err => setError('Error al cargar vendedores'));
+  }, []);
 
   const total = items.reduce((sum, i) => sum + i.product.precio * i.quantity, 0);
 
@@ -22,9 +32,11 @@ export default function CartPage() {
         body: JSON.stringify({
           items: items.map(i => ({
             product_id: i.product.id,
-            quantity: i.quantity
-          }))
-        })
+            quantity: i.quantity,
+            type: i.product.type === 'servicio' ? 'servicio' : 'producto', // Añadir el tipo
+          })),
+          vendedor: vendedorId,
+        }),
       });
       if (!resp.ok) throw new Error('Checkout fallido');
       const data = await resp.json();
@@ -40,9 +52,9 @@ export default function CartPage() {
 
   return (
     <Container className="py-5">
-      <h1>Tu Carrito</h1>
+      <h1>Carro</h1>
       {items.length === 0
-        ? <p>No hay productos en el carrito.</p>
+        ? <p>No hay productos y servicios en el carro.</p>
         : (
           <>
             <Table striped>
@@ -71,8 +83,22 @@ export default function CartPage() {
                 ))}
               </tbody>
             </Table>
+
             <h4>Total: {total}</h4>
+
+            {/* Dropdown para seleccionar un vendedor */}
+            <Form.Group controlId="vendedorSelect">
+              
+              <Form.Control as="select" value={vendedorId} onChange={e => setVendedorId(e.target.value)}>
+                <option value="">Seleccione un vendedor</option>
+                {vendedores.map(v => (
+                  <option key={v.id} value={v.id}>{v.nombre}</option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+
             {error && <p className="text-danger">{error}</p>}
+
             <Button onClick={handleCheckout} disabled={loading}>
               {loading ? 'Procesando...' : 'Finalizar Compra'}
             </Button>
