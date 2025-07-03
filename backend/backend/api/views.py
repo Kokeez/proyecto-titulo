@@ -8,9 +8,9 @@ from rest_framework import status, generics, permissions
 from django.contrib.auth.models import User
 from datetime import timedelta
 from django.http import JsonResponse
-from django.db.models import Sum
+from django.db.models import Sum, Value, IntegerField, DecimalField
 from datetime import datetime
-
+from django.db.models.functions import Coalesce
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.db.models import Sum
@@ -103,12 +103,6 @@ class UsuarioViewSet(viewsets.ModelViewSet):
 
     # Los campos modificables se definen en el serializer
 
-@api_view(['GET'])
-def listar_productos(request):
-    qs = Producto.objects.all()
-    ser = ProductoSerializer(qs, many=True, context={'request': request})
-    return Response(ser.data)
-
 
 @api_view(['GET'])
 def listar_boletas(request):
@@ -148,14 +142,27 @@ def detalle_boleta(request, boleta_id):
 
 @api_view(['GET'])
 def detalle_producto(request, producto_id):
-    # Recupera el objeto o da 404
     producto = get_object_or_404(Producto, pk=producto_id)
 
-    # Construye la URL completa de la imagen si existe
-    if producto.imagen:
-        imagen_url = request.build_absolute_uri(producto.imagen.url)
-    else:
-        imagen_url = None
+    # Agregados con output_field para evitar el mixed types error
+    ventas = producto.detalle_boletas.aggregate(
+        vendidas=Coalesce(
+            Sum('cantidad'),
+            Value(0),
+            output_field=IntegerField()
+        ),
+        total_generado=Coalesce(
+            Sum('subtotal'),
+            Value(0),
+            output_field=DecimalField(max_digits=12, decimal_places=2)
+        )
+    )
+
+    imagen_url = (
+        request.build_absolute_uri(producto.imagen.url)
+        if producto.imagen else
+        None
+    )
 
     data = {
         'id': producto.id,
@@ -164,8 +171,11 @@ def detalle_producto(request, producto_id):
         'precio': float(producto.precio),
         'cantidad_disponible': producto.cantidad_disponible,
         'imagen_url': imagen_url,
+        'vendidas': ventas['vendidas'],
+        'total_generado': float(ventas['total_generado']),
     }
     return Response(data)
+
 
 @api_view(['GET'])
 def estadisticas_ventas(request):

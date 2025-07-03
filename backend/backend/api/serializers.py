@@ -44,21 +44,56 @@ class LoginSerializer(serializers.Serializer):
             'access': str(access),
             'user': UsuarioSerializer(user).data
         }
+"VEHICULO SERIALIZER"
+class VehiculoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vehiculo
+        # excluimos kilometraje, dejamos id, marca, modelo y año
+        fields = ['id', 'marca', 'modelo', 'ano']
 "PRODUCTO SERIALIZER"
 class ProductoSerializer(serializers.ModelSerializer):
     imagen_url = serializers.SerializerMethodField()
     vendidas = serializers.IntegerField(read_only=True)
     total_generado = serializers.DecimalField(read_only=True, max_digits=10, decimal_places=2)
 
+    # ----> Este campo recibirá el ID que mandas desde el front
+    vehiculo_id = serializers.PrimaryKeyRelatedField(
+        queryset=Vehiculo.objects.all(),
+        source='vehiculo',        # mapea al FK "vehiculo"
+        allow_null=True,
+        required=False
+    )
+    # ----> Esto opcionalmente te deja ver los datos del vehículo en la respuesta
+    vehiculo = VehiculoSerializer(read_only=True)
+
     class Meta:
         model = Producto
-        fields = ['id', 'nombre', 'descripcion', 'precio', 'cantidad_disponible', 'imagen_url', 'vendidas', 'total_generado']
+        fields = [
+            'id', 'nombre', 'descripcion', 'precio', 'cantidad_disponible',
+            'imagen_url', 'tipo', 'es_alternativo',
+            'vehiculo_id', 'vehiculo',
+            'vendidas', 'total_generado'
+        ]
 
     def get_imagen_url(self, obj):
         request = self.context.get('request')
         if obj.imagen and request:
             return request.build_absolute_uri(obj.imagen.url)
         return None
+
+    def create(self, validated_data):
+        # Si incluyeron un vehículo, actualizo la marca
+        vehiculo = validated_data.get('vehiculo', None)
+        if vehiculo:
+            validated_data['marca'] = vehiculo.marca
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        # Mismo para el update
+        vehiculo = validated_data.get('vehiculo', instance.vehiculo)
+        if vehiculo:
+            validated_data['marca'] = vehiculo.marca
+        return super().update(instance, validated_data)
 
 "VENDEDOR SERIALIZER"
 class VendedorSerializer(serializers.ModelSerializer):
