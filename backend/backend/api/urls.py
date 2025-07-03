@@ -22,9 +22,10 @@ urlpatterns = [
     path('servicios/',     views.ServicioListAPIView.as_view(),   name='servicio-list'),
     path('servicios/<int:pk>/', views.ServicioDetailAPIView.as_view(), name='servicio-detail'),
     path('boletas/', views.listar_boletas, name='listar_boletas'),
-    path('boletas/<int:id>/', views.BoletaDetailAPIView.as_view(), name='boleta_detail'),
     path('vendedores/', views.vendedor_list, name='vendedor-list'),
     path('vendedores/<int:pk>/', views.vendedor_detail, name='vendedor-detail'),
+    path('boletas/<int:pk>/',  views.BoletaDetailAPIView.as_view(), name='boleta-detail'),
+    path('vehiculos/', views.VehiculoListAPIView.as_view(), name='vehiculo-list'),
 
     path('', include(router.urls)),
 ]

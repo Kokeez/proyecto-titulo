@@ -104,6 +104,11 @@ function Navbar({ userType, user }) {
                   Modificar
                 </Link>
               </li>
+            <li className="nav-item">
+                <Link to="/boletas" className="nav-link">
+                  Boletas
+                </Link>
+              </li>
             {userType === "admin" && (
               <li className="nav-item">
                 <Link to="/dashboard" className="nav-link">

@@ -71,12 +71,6 @@ class Vehiculo(models.Model):
     modelo = models.CharField(max_length=100, blank=True)
     ano = models.PositiveIntegerField()
     kilometraje = models.PositiveIntegerField(null=True, blank=True)
-    propietario = models.ForeignKey(
-        'Usuario',
-        on_delete=models.SET_NULL,
-        null=True,
-        related_name='vehiculos'
-    )
 
     class Meta:
         verbose_name = 'Vehículo'
@@ -92,7 +86,6 @@ class Producto(models.Model):
         ('Cámara', 'Cámara'),
         ('Líquido', 'Líquido'),
         ('Accesorio', 'Accesorio'),
-        # etc.
     ]
 
     nombre = models.CharField(max_length=200)
@@ -104,6 +97,13 @@ class Producto(models.Model):
     marca = models.CharField(max_length=100, blank=True)
     es_alternativo = models.BooleanField('Alternativo', default=False)
     fecha_agregado = models.DateTimeField(auto_now_add=True)
+    vehiculo = models.ForeignKey(
+        Vehiculo,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='productos'
+    )
 
     class Meta:
         verbose_name = 'Producto'

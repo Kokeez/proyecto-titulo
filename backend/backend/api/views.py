@@ -22,7 +22,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from django.utils import timezone
-from .models import Boleta, DetalleBoleta, Producto, Producto
+from .models import Boleta, DetalleBoleta, Producto, Producto, Vehiculo
 
 from rest_framework import viewsets, permissions
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -44,6 +44,7 @@ from .serializers import (
     ServicioSerializer,
     BoletaSerializer,
     LineItemSerializer,
+    BoletaDetailSerializer,
 )
 
 User = get_user_model()
@@ -234,54 +235,79 @@ def buscar_productos_live(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def checkout(request):
-    # LineItems: [{"product_id":1,"quantity":2}, ...]
-    items = request.data.get('items', [])
-    total = 0
-    
+    # 1) Validar líneas
+    serializer = LineItemSerializer(
+        data=request.data.get('items', []),
+        many=True
+    )
+    serializer.is_valid(raise_exception=True)
+    items = serializer.validated_data
+
+    # 2) Validar vendedor
+    vendedor_id = request.data.get('vendedor_id')
+    if not vendedor_id:
+        return Response({"error": "Vendedor no proporcionado"}, status=400)
+    try:
+        vendedor = Vendedor.objects.get(id=vendedor_id)
+    except Vendedor.DoesNotExist:
+        return Response({"error": "Vendedor no encontrado"}, status=404)
+
+    # 3) Crear boleta
     boleta = Boleta.objects.create(
         usuario=request.user,
-        vendedor_id=request.data.get('vendedor'),  # Asigna el vendedor recibido
-        fecha_venta=timezone.now(),
-        total=0  # lo ajustaremos luego
+        vendedor=vendedor,
+        total=0
     )
-    
+
+    # 4) Iterar líneas y crear detalle según sea producto o servicio
+    total = 0
     for line in items:
-        if line['type'] == 'producto':  # Si el item es un producto
+        qty = line['quantity']
+
+        if 'product_id' in line:
             prod = Producto.objects.get(pk=line['product_id'])
-            qty = line['quantity']
-            subtotal = prod.precio * qty
+            price = prod.precio
+            subtotal = price * qty
+
+            # Crea el detalle de producto
             DetalleBoleta.objects.create(
                 boleta=boleta,
                 producto=prod,
                 cantidad=qty,
-                precio_unitario=prod.precio,
+                precio_unitario=price,
                 subtotal=subtotal
             )
+
+            # Ajusta stock
             prod.cantidad_disponible = max(0, prod.cantidad_disponible - qty)
             prod.save()
-            total += subtotal
-        
-        elif line['type'] == 'servicio':  # Si el item es un servicio
-            servicio = Servicio.objects.get(pk=line['product_id'])
-            qty = line['quantity']
-            subtotal = servicio.precio_base * qty
+
+        else:  # viene service_id
+            serv = Servicio.objects.get(pk=line['service_id'])
+            price = serv.precio_base
+            subtotal = price * qty
+
+            # Crea el detalle de servicio
             DetalleBoleta.objects.create(
                 boleta=boleta,
-                servicio=servicio,
+                servicio=serv,
                 cantidad=qty,
-                precio_unitario=servicio.precio_base,
+                precio_unitario=price,
                 subtotal=subtotal
             )
-            total += subtotal
 
+        total += subtotal
+
+    # 5) Guardar total en la boleta y devolver respuesta
     boleta.total = total
     boleta.save()
 
     return Response({
         'boleta_id': boleta.id,
-        'fecha': boleta.fecha_venta,
-        'total': total,
+        'fecha_venta': boleta.fecha_venta,
+        'total': float(total),
     })
+
 
 
 
@@ -421,3 +447,20 @@ def vendedor_detail(request, pk):
     
     serializer = VendedorSerializer(vendedor)
     return Response(serializer.data)
+
+
+class BoletaDetailAPIView(generics.RetrieveUpdateAPIView):
+    queryset = Boleta.objects.all()
+    serializer_class = BoletaSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def update(self, request, *args, **kwargs):
+        boleta = self.get_object()
+        boleta.estado = request.data.get('estado', boleta.estado)
+        boleta.save()
+        return Response({'message': 'Estado de boleta actualizado'})
+
+class VehiculoListAPIView(generics.ListAPIView):
+    queryset = Vehiculo.objects.all()
+    serializer_class = VehiculoSerializer
+    permission_classes = [permissions.IsAuthenticated]

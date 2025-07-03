@@ -10,6 +10,8 @@ const ProductList = () => {
   const [filter, setFilter] = useState({ type: "", year: "", brand: "" });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [page, setPage]         = useState(0);
+  const pageSize                = 20;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,11 +41,17 @@ const ProductList = () => {
   }, [navigate]);
 
   // Filtrado con los filtros de tipo, año y marca
+  // Filtrado con los filtros de tipo, año y marca
   const filteredProducts = products.filter(p =>
     (filter.type === "" || p.type === filter.type) &&
-    (filter.year === "" || p.year === filter.year) && 
+    (filter.year === "" || p.year === filter.year) &&
     (filter.brand === "" || p.brand === filter.brand)
   );
+
+  // Paginación
+  const totalPages        = Math.ceil(filteredProducts.length / pageSize);
+  const start             = page * pageSize;
+  const pageItems  = filteredProducts.slice(start, start + pageSize);
 
   if (loading) {
     return (
@@ -61,7 +69,6 @@ const ProductList = () => {
       </Container>
     );
   }
-
   return (
     <Container className="py-5">
       <h1 className="text-center mb-4">Lista de Productos</h1>
@@ -109,7 +116,7 @@ const ProductList = () => {
 
       {/* Grid de productos */}
       <Row xs={1} sm={2} md={3} lg={4} className="g-4 justify-content-center">
-        {filteredProducts.map(prod => (
+        {pageItems.map(prod => (
           <Col key={prod.id}>
             <Link to={`/productos/${prod.id}`} style={{ textDecoration: 'none' }}>
               <Card className="h-100 shadow-sm">
@@ -136,6 +143,20 @@ const ProductList = () => {
           </Col>
         ))}
       </Row>
+            {/* Controles de paginación */}
+      <div className="d-flex justify-content-between align-items-center mt-4">
+        <Button
+          disabled={page === 0}
+          onClick={() => setPage(page - 1)}
+        >Anterior</Button>
+
+        <span>Página {page + 1} de {totalPages}</span>
+
+        <Button
+          disabled={page + 1 >= totalPages}
+          onClick={() => setPage(page + 1)}
+        >Siguiente</Button>
+      </div>
     </Container>
   );
 };

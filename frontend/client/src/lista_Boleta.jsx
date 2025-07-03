@@ -1,72 +1,89 @@
+// src/BoletaList.jsx
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Table, Button } from 'react-bootstrap';
+import { Container, Table, Button, Spinner, Alert } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-const BoletaList = () => {
+export default function BoletaList() {
   const [boletas, setBoletas] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
+  const [error, setError]     = useState('');
+  const [page, setPage]       = useState(0);
+  const pageSize              = 20;
+  const navigate              = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('access');
     if (!token) {
-      // Si no está logueado, lo enviamos al login
       navigate('/login');
       return;
     }
-
-    fetch("http://localhost:8000/api/boletas/", {
+    fetch('http://localhost:8000/api/boletas/', {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((res) => {
+      .then(res => {
         if (res.status === 401 || res.status === 403) {
           navigate('/login');
-          throw new Error("No autorizado");
+          throw new Error('No autorizado');
         }
-        if (!res.ok) throw new Error("Error al cargar boletas");
+        if (!res.ok) throw new Error('Error al cargar boletas');
         return res.json();
       })
-      .then((data) => setBoletas(data))
-      .catch((err) => setError(err.message))
+      .then(data => setBoletas(data))
+      .catch(err => setError(err.message))
       .finally(() => setLoading(false));
   }, [navigate]);
 
-  // Función para actualizar el estado de la boleta
   const handleUpdateEstado = (id, estado) => {
     const token = localStorage.getItem('access');
     fetch(`http://localhost:8000/api/boletas/${id}/`, {
       method: 'PATCH',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ estado }),
     })
-      .then((res) => {
-        if (!res.ok) throw new Error("Error al actualizar estado");
+      .then(res => {
+        if (!res.ok) throw new Error('Error al actualizar estado');
         return res.json();
       })
       .then(() => {
-        // Actualizar el estado de la boleta localmente
-        setBoletas((prev) => prev.map((b) =>
-          b.id === id ? { ...b, estado } : b
-        ));
+        setBoletas(prev =>
+          prev.map(b => (b.id === id ? { ...b, estado } : b))
+        );
         toast.success('Estado de boleta actualizado');
       })
-      .catch((err) => toast.error(err.message));
+      .catch(err => toast.error(err.message));
   };
 
-  if (loading) return <Container>Cargando...</Container>;
-  if (error) return <Container className="text-danger">{error}</Container>;
+const handlePrint = (id) => {
+  // construimos la URL con hash
+  const url = `${window.location.origin}/invoice/${id}`;
+  const printWindow = window.open(url, '_blank');
+
+  // al cargar, le decimos que imprima
+  printWindow.addEventListener('load', () => {
+    printWindow.print();
+  });
+};
+
+  // Paginación
+  const totalPages = Math.ceil(boletas.length / pageSize);
+  const start      = page * pageSize;
+  const pageItems  = boletas.slice(start, start + pageSize);
+
+
+  if (loading) return <Container className="py-5 text-center"><Spinner animation="border" /></Container>;
+  if (error)   return <Container className="py-5"><Alert variant="danger">{error}</Alert></Container>;
 
   return (
-    <Container>
-      <h2>Boletas</h2>
+    <Container className="py-5">
+      <h2 className="mb-4">Listado de Boletas</h2>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -74,50 +91,83 @@ const BoletaList = () => {
             <th>Fecha Venta</th>
             <th>Total</th>
             <th>Estado</th>
-            <th>Acción</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {boletas.map((boleta) => (
+          {pageItems.map((boleta) => (
             <tr key={boleta.id}>
               <td>{boleta.id}</td>
-              <td>{boleta.fecha_venta}</td>
-              <td>{new Intl.NumberFormat('es-CL', {
-                style: 'currency', currency: 'CLP'
-              }).format(boleta.total)}</td>
+              <td>{new Date(boleta.fecha_venta).toLocaleString('es-CL')}</td>
+              <td>
+                {new Intl.NumberFormat('es-CL', {
+                  style: 'currency',
+                  currency: 'CLP',
+                  minimumFractionDigits: 0
+                }).format(boleta.total)}
+              </td>
               <td>{boleta.estado}</td>
               <td>
-                {boleta.estado === "Pendiente" && (
+                {/* Cambio de estado */}
+                {boleta.estado === 'Pendiente' && (
                   <Button
                     variant="success"
+                    size="sm"
                     onClick={() => handleUpdateEstado(boleta.id, 'Pagada')}
+                    className="me-2"
                   >
-                    Marcar como Pagada
+                    Marcar Pagada
                   </Button>
                 )}
-                {boleta.estado === "Pagada" && (
+                {boleta.estado === 'Pagada' && (
                   <Button
                     variant="warning"
+                    size="sm"
                     onClick={() => handleUpdateEstado(boleta.id, 'Pendiente')}
+                    className="me-2"
                   >
-                    Marcar como Pendiente
+                    Marcar Pendiente
                   </Button>
                 )}
-                {boleta.estado === "Anulada" && (
+                {boleta.estado === 'Anulada' && (
                   <Button
                     variant="danger"
+                    size="sm"
                     onClick={() => handleUpdateEstado(boleta.id, 'Pendiente')}
+                    className="me-2"
                   >
-                    Marcar como Pendiente
+                    Reactivar
                   </Button>
                 )}
+                {/* Botón Imprimir */}
+                  <Button
+                  as={Link}
+                  to={`/invoice/${boleta.id}`}
+                  variant="primary"
+                  size="sm"
+                  >
+                    Imprimir
+                  </Button>
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
+            {/* Controles de paginación */}
+      <div className="d-flex justify-content-between align-items-center">
+        <Button
+          disabled={page === 0}
+          onClick={() => setPage(page - 1)}
+        >Anterior</Button>
+
+        <span>Página {page + 1} de {totalPages}</span>
+
+        <Button
+          disabled={page + 1 >= totalPages}
+          onClick={() => setPage(page + 1)}
+        >Siguiente</Button>
+      </div>
     </Container>
   );
-};
+}
 
-export default BoletaList;

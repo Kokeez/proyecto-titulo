@@ -14,6 +14,8 @@ import ProductForm  from "./productForm";
 import Services from "./servicios";
 import ServiceDetail from "./serviceDetail";
 import BoletaList from "./lista_Boleta";
+import Invoice from './InvoicePage';
+
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -78,6 +80,7 @@ const App = () => {
         <Route path="/servicios" element={<Services />} />
         <Route path="/servicios/:id" element={<ServiceDetail />} />
         <Route path="/boletas" element={<BoletaList />} />
+        <Route path="/invoice/:boletaId" element={<Invoice />} />
         {/* ...otras rutas... */}
       </Routes>
     </div>

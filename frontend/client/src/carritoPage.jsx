@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { useCart } from './carritoContext';
-import { Button, Table, Container, Form } from 'react-bootstrap';
+import { useCart }          from './carritoContext';
+import { Button, Table, Container, Form, Spinner, Alert } from 'react-bootstrap';
+import { useNavigate }      from 'react-router-dom';
 
 export default function CartPage() {
   const { items, removeItem, clearCart } = useCart();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [vendedorId, setVendedorId] = useState('');
-  const [vendedores, setVendedores] = useState([]);
+  const [loading, setLoading]            = useState(false);
+  const [error, setError]                = useState(null);
+  const [vendedorId, setVendedorId]      = useState('');
+  const [vendedores, setVendedores]      = useState([]);
+  const navigate                         = useNavigate();
 
   useEffect(() => {
-    // Obtener la lista de vendedores
-    fetch('http://localhost:8000/api/vendedores/')  // Ajusta la URL si es necesario
-      .then(res => res.json())
+    fetch('http://localhost:8000/api/vendedores/')
+      .then(res => {
+        if (!res.ok) throw new Error('Error al cargar vendedores');
+        return res.json();
+      })
       .then(data => setVendedores(data))
-      .catch(err => setError('Error al cargar vendedores'));
+      .catch(err => setError(err.message));
   }, []);
 
   const total = items.reduce((sum, i) => sum + i.product.precio * i.quantity, 0);
@@ -31,19 +35,24 @@ export default function CartPage() {
         },
         body: JSON.stringify({
           items: items.map(i => ({
-            product_id: i.product.id,
-            quantity: i.quantity,
-            type: i.product.type === 'servicio' ? 'servicio' : 'producto', // Añadir el tipo
-          })),
-          vendedor: vendedorId,
+            // si es servicio…
+            ...(i.product.type === 'servicio'
+              ? { service_id: i.product.id }
+              : { product_id: i.product.id }
+    ),
+    quantity: i.quantity
+  })),
+  vendedor_id: vendedorId,        // coincidir con lo que espera el backend
         }),
       });
-      if (!resp.ok) throw new Error('Checkout fallido');
+      if (!resp.ok) {
+        const data = await resp.json().catch(() => ({}));
+        throw new Error(data.error || 'Checkout fallido');
+      }
       const data = await resp.json();
       clearCart();
-      alert(`Compra realizada! Boleta #${data.boleta_id}`);
+      navigate(`/invoice/${data.boleta_id}`);
     } catch (err) {
-      console.error(err);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -52,15 +61,15 @@ export default function CartPage() {
 
   return (
     <Container className="py-5">
-      <h1>Carro</h1>
+      <h1>Tu Carrito</h1>
       {items.length === 0
-        ? <p>No hay productos y servicios en el carro.</p>
+        ? <Alert variant="info">No hay productos ni servicios en el carrito.</Alert>
         : (
           <>
-            <Table striped>
+            <Table striped hover>
               <thead>
                 <tr>
-                  <th>Producto</th>
+                  <th>Producto/Servicio</th>
                   <th>Cantidad</th>
                   <th>Precio U.</th>
                   <th>Subtotal</th>
@@ -72,10 +81,16 @@ export default function CartPage() {
                   <tr key={i.product.id}>
                     <td>{i.product.nombre}</td>
                     <td>{i.quantity}</td>
-                    <td>{i.product.precio}</td>
-                    <td>{i.product.precio * i.quantity}</td>
+                    <td>{new Intl.NumberFormat('es-CL',{
+                          style:'currency',currency:'CLP',minimumFractionDigits:0
+                        }).format(i.product.precio)}</td>
+                    <td>{new Intl.NumberFormat('es-CL',{
+                          style:'currency',currency:'CLP',minimumFractionDigits:0
+                        }).format(i.product.precio * i.quantity)}</td>
                     <td>
-                      <Button variant="danger" size="sm"
+                      <Button 
+                        variant="danger" 
+                        size="sm"
                         onClick={() => removeItem(i.product.id)}
                       >Quitar</Button>
                     </td>
@@ -84,26 +99,40 @@ export default function CartPage() {
               </tbody>
             </Table>
 
-            <h4>Total: {total}</h4>
+            <h4>Total: {new Intl.NumberFormat('es-CL',{
+                          style:'currency',currency:'CLP',minimumFractionDigits:0
+                        }).format(total)}</h4>
 
-            {/* Dropdown para seleccionar un vendedor */}
-            <Form.Group controlId="vendedorSelect">
-              
-              <Form.Control as="select" value={vendedorId} onChange={e => setVendedorId(e.target.value)}>
-                <option value="">Seleccione un vendedor</option>
+            {/* ——— Aquí está el cambio clave ——— */}
+            <Form.Group className="mb-3" controlId="vendedorSelect">
+              <Form.Label>Vendedor</Form.Label>
+              <Form.Select 
+                value={vendedorId} 
+                onChange={e => setVendedorId(e.target.value)}
+                aria-label="Seleccionar vendedor"
+              >
+                <option value="">-- Seleccione un vendedor --</option>
                 {vendedores.map(v => (
-                  <option key={v.id} value={v.id}>{v.nombre}</option>
+                  <option key={v.id} value={v.id}>
+                    {v.nombre}
+                  </option>
                 ))}
-              </Form.Control>
+              </Form.Select>
             </Form.Group>
+            {/* ————————————————————————————— */}
 
-            {error && <p className="text-danger">{error}</p>}
+            {error && <Alert variant="danger">{error}</Alert>}
 
-            <Button onClick={handleCheckout} disabled={loading}>
-              {loading ? 'Procesando...' : 'Finalizar Compra'}
+            <Button 
+              onClick={handleCheckout} 
+              disabled={loading || !vendedorId}
+            >
+              {loading ? <Spinner size="sm"/> : 'Finalizar Compra'}
             </Button>
           </>
         )}
     </Container>
   );
 }
+
+

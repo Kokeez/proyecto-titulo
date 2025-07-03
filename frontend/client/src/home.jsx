@@ -45,7 +45,7 @@ const Home = () => {
         <Card.Body>
             <Card.Title>Lavado de Autos</Card.Title>
             <Card.Text>Servicio completo de lavado exterior e interior, con opciones a domicilio para tu comodidad.</Card.Text>
-            <Button variant="primary" href="/servicios/lavado">Ver más</Button>
+            <Button variant="primary" href="/servicios">Ver más</Button>
             </Card.Body>
             </Card>
             </Col>
@@ -57,7 +57,7 @@ const Home = () => {
             <Card.Text>
               Mantenimiento preventivo y correctivo para asegurar el óptimo funcionamiento de tu vehículo.
             </Card.Text>
-            <Button variant="primary" href="/servicios/mantenimiento">Ver más</Button>
+            <Button variant="primary" href="/servicios">Ver más</Button>
           </Card.Body>
         </Card>
       </Col>
@@ -69,7 +69,7 @@ const Home = () => {
             <Card.Text>
               Encuentra una amplia gama de accesorios para personalizar y mejorar tu vehículo.
             </Card.Text>
-            <Button variant="primary" href="/servicios/accesorios">Ver más</Button>
+            <Button variant="primary" href="/servicios">Ver más</Button>
           </Card.Body>
         </Card>
       </Col>

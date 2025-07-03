@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model, authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Producto, Vendedor, Vehiculo, Servicio, Boleta
+from .models import Producto, Vendedor, Vehiculo, Servicio, Boleta, DetalleBoleta
 
 
 User = get_user_model()
@@ -104,19 +104,57 @@ class ServicioSerializer(serializers.ModelSerializer):
         return representation
     
 "VENTAS SERIALIZERS"
+
+class DetalleBoletaSerializer(serializers.ModelSerializer):
+    producto_nombre = serializers.CharField(source='producto.nombre', read_only=True)
+    servicio_nombre = serializers.CharField(source='servicio.nombre', read_only=True)
+
+    class Meta:
+        model  = DetalleBoleta
+        fields = ['id', 'producto_nombre', 'servicio_nombre',
+                  'cantidad', 'precio_unitario', 'subtotal']
+
 class BoletaSerializer(serializers.ModelSerializer):
+    vendedor = VendedorSerializer(read_only=True)
+    detalles = DetalleBoletaSerializer(many=True, read_only=True)  # quitamos `source`
+
     class Meta:
         model = Boleta
-        fields = ['id', 'fecha_venta', 'total', 'estado', 'tipo', 'usuario', 'vendedor']
+        fields = ['id', 'fecha_venta', 'total', 'estado', 'tipo', 'vendedor', 'detalles']
+
+        
+class BoletaDetailSerializer(serializers.ModelSerializer):
+    vendedor = VendedorSerializer(read_only=True)
+    detalles = DetalleBoletaSerializer(many=True, read_only=True)  # sin source redundante
+
+    class Meta:
+        model  = Boleta
+        fields = ['id', 'fecha_venta', 'total', 'estado', 'tipo', 'vendedor', 'detalles']
 
 
 class LineItemSerializer(serializers.Serializer):
-    product_id = serializers.IntegerField()
-    quantity = serializers.IntegerField()
+    product_id = serializers.IntegerField(required=False)
+    service_id = serializers.IntegerField(required=False)
+    quantity   = serializers.IntegerField(min_value=1)
+
+    def validate(self, data):
+        # Al menos uno de los dos campos debe venir
+        if not data.get('product_id') and not data.get('service_id'):
+            raise serializers.ValidationError(
+                "Debe especificar product_id o service_id en cada línea."
+            )
+        return data
 
     def validate_product_id(self, value):
         try:
             Producto.objects.get(id=value)
         except Producto.DoesNotExist:
-            raise serializers.ValidationError('El producto no existe')
+            raise serializers.ValidationError("El producto no existe.")
+        return value
+
+    def validate_service_id(self, value):
+        try:
+            Servicio.objects.get(id=value)
+        except Servicio.DoesNotExist:
+            raise serializers.ValidationError("El servicio no existe.")
         return value
