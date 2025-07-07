@@ -25,6 +25,7 @@ urlpatterns = [
     path('vendedores/<int:pk>/', views.vendedor_detail, name='vendedor-detail'),
     path('boletas/<int:pk>/',  views.BoletaDetailAPIView.as_view(), name='boleta-detail'),
     path('vehiculos/', views.VehiculoListAPIView.as_view(), name='vehiculo-list'),
+    path('recomendacion/', views.TodayRecommendationAPIView.as_view(), name='recomendacion-hoy'),
 
     path('', include(router.urls)),
 ]

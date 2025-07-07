@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model, authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Producto, Vendedor, Vehiculo, Servicio, Boleta, DetalleBoleta
+from .models import Producto, Vendedor, Vehiculo, Servicio, Boleta, DetalleBoleta, Recommendation
 
 
 User = get_user_model()
@@ -193,3 +193,10 @@ class LineItemSerializer(serializers.Serializer):
         except Servicio.DoesNotExist:
             raise serializers.ValidationError("El servicio no existe.")
         return value
+
+
+
+class RecommendationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model  = Recommendation
+        fields = ['fecha', 'contenido']

@@ -271,3 +271,16 @@ class Pago(models.Model):
 
     def __str__(self):
         return f"Pago #{self.id} - {self.boleta} : {self.monto}"
+
+
+class Recommendation(models.Model):
+    fecha       = models.DateField(auto_now_add=True, unique=True)
+    contenido   = models.TextField()
+    creada_en   = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Recomendación"
+        verbose_name_plural = "Recomendaciones"
+
+    def __str__(self):
+        return f"Recomendación {self.fecha}"
