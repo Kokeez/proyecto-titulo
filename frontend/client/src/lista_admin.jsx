@@ -7,6 +7,13 @@ import { toast }                        from 'react-toastify';
 export default function ProductList2() {
   const [productos, setProductos] = useState([]);
   const navigate                  = useNavigate();
+  const [page, setPage]       = useState(0);
+  const pageSize                  = 10;
+
+  // Paginación
+  const totalPages = Math.ceil(productos.length / pageSize);
+  const start      = page * pageSize;
+  const pageItems  = productos.slice(start, start + pageSize);
 
   useEffect(() => {
     fetch('http://localhost:8000/api/productos/', {
@@ -57,7 +64,7 @@ export default function ProductList2() {
           </tr>
         </thead>
         <tbody>
-          {productos.map(p => (
+          {pageItems.map(p => (
             <tr key={p.id}>
               {/* AQUI va la imagen */}
               <td style={{ width: 100 }}>
@@ -113,6 +120,20 @@ export default function ProductList2() {
           ))}
         </tbody>
       </Table>
+                  {/* Controles de paginación */}
+            <div className="d-flex justify-content-between align-items-center">
+              <Button
+                disabled={page === 0}
+                onClick={() => setPage(page - 1)}
+              >Anterior</Button>
+      
+              <span>Página {page + 1} de {totalPages}</span>
+      
+              <Button
+                disabled={page + 1 >= totalPages}
+                onClick={() => setPage(page + 1)}
+              >Siguiente</Button>
+            </div>
     </Container>
   );
 }

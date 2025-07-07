@@ -17,11 +17,13 @@ class ApiConfig(AppConfig):
             sched = BackgroundScheduler()
             sched.add_job(
                 generar_recomendacion_diaria,
-                trigger="interval",  # cambiar luego a "cron"
-                minutes=1,           # luego: hour=1, minute=0
-                id="reco_prueba",
+                trigger="cron",    # <-- cambio aquí
+                hour=8,
+                minute=0,
+                id="generar_recomendacion_diaria",
                 replace_existing=True,
             )
             sched.start()
-            log.info("✅ Job ‘reco_prueba’ programada cada minuto para pruebas")
+            log.info("Job ‘generar_recomendacion_diaria’ programada todos los días a las 08:00")
+
 
