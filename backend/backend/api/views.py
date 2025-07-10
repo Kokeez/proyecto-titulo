@@ -19,6 +19,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from django.db.models import Sum, Q, Value, IntegerField, DecimalField
+from django.db.models.functions import Coalesce
 
 # ==== Modelos locales ====
 from .models import (
@@ -354,33 +356,42 @@ def checkout(request):
 
 
 
+from django.db.models import Sum, Q, Value, IntegerField
+from django.db.models.functions import Coalesce
 
 @api_view(['GET'])
 def top_products(request):
-    # Anotamos cuántas unidades de cada producto se han vendido
-    productos = (
-        Producto.objects
-                .annotate(vendidas=Sum('detalle_boletas__cantidad'))
-                .order_by('-vendidas')[:3]
+    # 1) Anotamos solo líneas de boletas pagadas
+    qs = Producto.objects.annotate(
+        vendidas=Coalesce(
+            Sum(
+                'detalle_boletas__cantidad',
+                filter=Q(detalle_boletas__boleta__estado='Pagada')
+            ),
+            Value(0),
+            output_field=IntegerField()
+        )
     )
+    # 2) Ordenamos de más vendidas a menos y luego tomamos 3
+    top3 = qs.order_by('-vendidas')[:3]
 
     data = []
-    for p in productos:
-        # Construimos la URL absoluta de la imagen si existe
-        imagen_url = None
-        if p.imagen and hasattr(p.imagen, 'url'):
-            imagen_url = request.build_absolute_uri(p.imagen.url)
-
+    for p in top3:
+        imagen_url = (
+            request.build_absolute_uri(p.imagen.url)
+            if p.imagen and hasattr(p.imagen, 'url') else None
+        )
         data.append({
             'id':          p.id,
             'nombre':      p.nombre,
             'descripcion': p.descripcion,
             'precio':      float(p.precio),
             'imagen_url':  imagen_url,
-            'vendidas':    int(p.vendidas or 0),
+            'vendidas':    int(p.vendidas),
         })
-
     return Response(data)
+
+
 
 class ProductoViewSet(viewsets.ModelViewSet):
     queryset = Producto.objects.all()
@@ -391,7 +402,7 @@ class ProductoViewSet(viewsets.ModelViewSet):
         """
         En el update, si no viene 'imagen' en el request, no lo sobreescribimos.
         """
-        partial = kwargs.pop('partial', False)
+        partial = kwargs.pop('partial', True)
         instance = self.get_object()
         data = request.data.copy()
 
@@ -458,6 +469,8 @@ def listar_boletas(request):
     boletas = Boleta.objects.all()
     data = BoletaSerializer(boletas, many=True).data
     return Response(data)
+
+
 class BoletaDetailAPIView(generics.RetrieveUpdateAPIView):
     queryset = Boleta.objects.all()
     serializer_class = BoletaSerializer

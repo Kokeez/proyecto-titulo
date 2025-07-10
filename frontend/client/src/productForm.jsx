@@ -107,7 +107,7 @@ export default function ProductForm() {
     const url    = id
       ? `http://localhost:8000/api/productos/${id}/`
       : `http://localhost:8000/api/productos/`;
-    const method = id ? 'PUT' : 'POST';
+      const method = id ? 'PATCH' : 'POST';
 
     const resp = await fetch(url, {
       method,

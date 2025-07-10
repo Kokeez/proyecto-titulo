@@ -1,36 +1,82 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from "react-router-dom";
-import { Container, Row, Col, Button, Card, Form } from "react-bootstrap";
-import "./home.css";
+import { useNavigate, Link } from 'react-router-dom';
+import { Container, Row, Col, Button, Card, FormControl, ListGroup } from 'react-bootstrap';
+import './home.css';
 import repuestosImage from './images/repuesto.jpg';
 import serviciosImage from './images/servicios.jpg';
 import homeImage from './images/home.jpg';
-import lavadoImage from './images/lavado.jpg'
+import lavadoImage from './images/lavado.jpg';
+
 const Home = () => {
-    const [featured, setFeatured] = useState([]);
-  
-    useEffect(() => {
-      fetch('http://localhost:8000/api/productos/top/')
-        .then(res => res.json())
-        .then(setFeatured)
-        .catch(err => console.error('Error cargando top products:', err));
-    }, []);
+  const [featured, setFeatured]     = useState([]);
+  const [query, setQuery]           = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [showList, setShowList]       = useState(false);
+  const navigate                      = useNavigate();
+
+  // Carga productos destacados
+  useEffect(() => {
+    fetch('http://localhost:8000/api/productos/top/')
+      .then(res => res.json())
+      .then(setFeatured)
+      .catch(err => console.error('Error cargando top products:', err));
+  }, []);
+
+  // Búsqueda en tiempo real con debounce
+  useEffect(() => {
+    if (!query.trim()) {
+      setSuggestions([]);
+      setShowList(false);
+      return;
+    }
+    const handler = setTimeout(async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:8000/api/productos/search/?q=${encodeURIComponent(query)}`
+        );
+        if (!res.ok) throw new Error('Network response was not ok');
+        const data = await res.json();
+        setSuggestions(data);
+        setShowList(data.length > 0);
+      } catch (err) {
+        console.error('Error al buscar productos:', err);
+        setSuggestions([]);
+        setShowList(false);
+      }
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [query]);
+
+  const onSelect = (id) => {
+    setShowList(false);
+    setQuery('');
+    navigate(`/productos/${id}`);
+  };
+
 
   return (
     <div>
       <section className="hero" style={{ position: 'relative', color: 'white', padding: '80px 0' }}>
-        <div className="parallax-background" style={{ backgroundImage: `url(${homeImage})` }}></div> {/* Fondo parallax con imagen local */}
-        <Container className="text-center">
+        <div className="parallax-background" style={{ backgroundImage: `url(${homeImage})` }} />
+        <Container className="text-center" style={{ position: 'relative', zIndex: 2 }}>
           <h1>Bienvenido a VulcaStock!</h1>
-          <p className="lead">Busqueda de cualquier producto o servicio</p>
-          <Form className="d-flex justify-content-center mb-4">
-            <Form.Control
-              type="text"
-              placeholder="Buscar..."
-              className="w-50"
-            />
-            <Button variant="primary" className="ms-2">Buscar</Button>
-          </Form>
+          <p className="lead">Sistema de gestion para Cars Integral</p>
+          <div style={{ maxWidth: 400, margin: '0 auto', position: 'relative' }}>
+           
+            {showList && (
+              <ListGroup className="suggestions-list" style={{ position: 'absolute', width: '100%' }}>
+                {suggestions.map(s => (
+                  <ListGroup.Item
+                    key={s.id}
+                    action
+                    onMouseDown={() => onSelect(s.id)}
+                  >
+                    {s.nombre}
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
+            )}
+          </div>
         </Container>
       </section>
 

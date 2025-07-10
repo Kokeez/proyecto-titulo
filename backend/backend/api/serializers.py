@@ -52,25 +52,33 @@ class VehiculoSerializer(serializers.ModelSerializer):
         fields = ['id', 'marca', 'modelo', 'ano']
 "PRODUCTO SERIALIZER"
 class ProductoSerializer(serializers.ModelSerializer):
+    # Campo para subir la imagen
+    imagen = serializers.ImageField(
+        write_only=True,      # se usa sólo al crear/editar
+        required=False,       # opcional
+        allow_null=True
+    )
     imagen_url = serializers.SerializerMethodField()
     vendidas = serializers.IntegerField(read_only=True)
-    total_generado = serializers.DecimalField(read_only=True, max_digits=10, decimal_places=2)
+    total_generado = serializers.DecimalField(
+        read_only=True, max_digits=10, decimal_places=2
+    )
 
-    # ----> Este campo recibirá el ID que mandas desde el front
     vehiculo_id = serializers.PrimaryKeyRelatedField(
         queryset=Vehiculo.objects.all(),
-        source='vehiculo',        # mapea al FK "vehiculo"
+        source='vehiculo',
         allow_null=True,
         required=False
     )
-    # ----> Esto opcionalmente te deja ver los datos del vehículo en la respuesta
     vehiculo = VehiculoSerializer(read_only=True)
 
     class Meta:
         model = Producto
         fields = [
             'id', 'nombre', 'descripcion', 'precio', 'cantidad_disponible',
-            'imagen_url', 'tipo', 'es_alternativo',
+            'imagen',           # <- lo añadimos aquí
+            'imagen_url',
+            'tipo', 'es_alternativo',
             'vehiculo_id', 'vehiculo',
             'vendidas', 'total_generado'
         ]
@@ -82,18 +90,31 @@ class ProductoSerializer(serializers.ModelSerializer):
         return None
 
     def create(self, validated_data):
-        # Si incluyeron un vehículo, actualizo la marca
+        # extraigo la imagen si llega
+        imagen = validated_data.pop('imagen', None)
         vehiculo = validated_data.get('vehiculo', None)
         if vehiculo:
             validated_data['marca'] = vehiculo.marca
-        return super().create(validated_data)
+
+        producto = super().create(validated_data)
+        if imagen:
+            producto.imagen = imagen
+            producto.save(update_fields=['imagen'])
+        return producto
 
     def update(self, instance, validated_data):
-        # Mismo para el update
+        # permitimos partial update
+        imagen = validated_data.pop('imagen', None)
         vehiculo = validated_data.get('vehiculo', instance.vehiculo)
         if vehiculo:
             validated_data['marca'] = vehiculo.marca
-        return super().update(instance, validated_data)
+
+        producto = super().update(instance, validated_data)
+        if imagen:
+            producto.imagen = imagen
+            producto.save(update_fields=['imagen'])
+        return producto
+
 
 "VENDEDOR SERIALIZER"
 class VendedorSerializer(serializers.ModelSerializer):
